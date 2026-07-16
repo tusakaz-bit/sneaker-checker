@@ -1,0 +1,167 @@
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { searchRakutenItems } from '@/lib/rakuten';
+import { deslugify, getRakutenDayInfo } from '@/lib/utils';
+import { SNEAKER_CATALOG } from '@/app/data/sneakerCatalog';
+import styles from '@/app/page.module.css';
+import Link from 'next/link';
+
+type Params = Promise<{ brand: string; model: string }>;
+type SearchParams = Promise<{ color?: string; size?: string }>;
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { brand, model } = await params;
+  const brandName = deslugify(brand);
+  const modelName = deslugify(model);
+
+  const formatName = (str: string) => str.replace(/\b\w/g, c => c.toUpperCase());
+  const displayBrand = formatName(brandName);
+  const displayModel = formatName(modelName);
+
+  return {
+    title: `2026年最新: ${displayBrand} ${displayModel} の最安値・在庫状況まとめ | Sneaker Checker`,
+    description: `プレ値必須の人気スニーカー「${displayBrand} ${displayModel}」の優良在庫をリアルタイム比較。一番安く安心して買えるショップを探せます。送料無料やレビューも一目で確認可能！`,
+  };
+}
+
+export default async function SneakerPage(props: { params: Params, searchParams: SearchParams }) {
+  const { brand, model } = await props.params;
+  const searchParams = await props.searchParams;
+  
+  const brandName = deslugify(brand);
+  const modelName = deslugify(model);
+  
+  const formatName = (str: string) => str.replace(/\b\w/g, c => c.toUpperCase());
+  const displayBrand = formatName(brandName);
+  const displayModel = formatName(modelName);
+
+  const rakutenDay = getRakutenDayInfo();
+  const colorParam = searchParams.color;
+  const color = colorParam && colorParam !== '指定なし' ? colorParam.replace(/[()\/]/g, ' ') : '';
+  const size = searchParams.size || '';
+  
+  const searchQuery = `${displayBrand} ${displayModel} ${color} ${size} スニーカー`.trim().replace(/\s+/g, ' ');
+
+  let items = [];
+  let errorMsg = null;
+
+  try {
+    items = await searchRakutenItems({ keyword: searchQuery, brand: displayBrand });
+  } catch (error: any) {
+    errorMsg = error.message;
+  }
+
+  const renderStars = (average: number) => {
+    const fullStars = Math.floor(average);
+    const hasHalfStar = average % 1 >= 0.5;
+    let stars = "";
+    for (let i = 0; i < fullStars; i++) stars += "★";
+    if (hasHalfStar) stars += "☆";
+    while (stars.length < 5) stars += "☆";
+    return stars;
+  };
+
+  return (
+    <main className={styles.main}>
+      <div style={{ marginBottom: '1rem' }}>
+        <Link href="/" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 'bold' }}>
+          ← トップページに戻る
+        </Link>
+      </div>
+
+      <h1 className={styles.title}>{displayBrand} {displayModel}</h1>
+      <p className={styles.subtitle} style={{ marginBottom: '2rem' }}>
+        {color || size ? `条件: ${color} ${size}` : '最新の最安値・優良在庫状況'}
+      </p>
+
+      {(rakutenDay.isToday || rakutenDay.isTomorrow) && (
+        <div className={styles.saleBanner}>
+          {rakutenDay.isToday ? '🔥 本日は「0と5のつく日」！楽天ポイント5倍デー！ 🔥' : '🔔 明日は「0と5のつく日」！楽天ポイント5倍デー！ 🔔'}
+        </div>
+      )}
+
+      {errorMsg ? (
+        <div className={styles.noticeBoard} style={{ borderLeftColor: "var(--accent)" }}>
+          <p className={styles.noticeText}>❌ {errorMsg}</p>
+        </div>
+      ) : (
+        <>
+          <div className={styles.noticeBoard}>
+            <p className={styles.noticeText}>
+              ⚠️ 検索精度を高めるため、8,000円以下の安すぎる小物（靴紐等）は自動的に除外しています。
+            </p>
+          </div>
+          {items.length > 0 && (
+            <p className={styles.subtitle} style={{ marginBottom: "1rem" }}>
+              {items.length}件の優良在庫が見つかりました（安い順）
+            </p>
+          )}
+          <div className={styles.grid}>
+            {items.map((item: any) => (
+              <div key={item.itemCode} className={styles.card}>
+                <div className={styles.badgeContainer}>
+                  {item.pointRate > 1 && (
+                    <div className={styles.pointBadge}>✨ ポイント{item.pointRate}倍</div>
+                  )}
+                  {item.reviewCount >= 5 && item.reviewAverage >= 4.0 && (
+                    <div className={styles.popularBadge}>🔥 大人気</div>
+                  )}
+                </div>
+                <div className={styles.imageContainer}>
+                  {item.mediumImageUrls && item.mediumImageUrls.length > 0 ? (
+                    <img
+                      src={item.mediumImageUrls[0].imageUrl.replace('?_ex=128x128', '?_ex=400x400')}
+                      alt={item.itemName}
+                      className={styles.image}
+                    />
+                  ) : (
+                    <div className={styles.image} style={{ display:"flex", alignItems:"center", justifyContent:"center", color:"#aaa", fontSize:"0.875rem" }}>No Image</div>
+                  )}
+                </div>
+                <div className={styles.cardContent}>
+                  <h3 className={styles.itemName}>{item.itemName}</h3>
+                  <div className={styles.shopInfo}>
+                    <p className={styles.shopName}>{item.shopName}</p>
+                    {item.shopOfTheYearFlag === 1 && (
+                      <span className={styles.shopOfTheYear}>👑 優良ショップ</span>
+                    )}
+                  </div>
+                  
+                  {item.reviewCount > 0 && (
+                    <div className={styles.reviewData}>
+                      <span className={styles.stars}>{renderStars(item.reviewAverage)}</span>
+                      <span className={styles.reviewCount}>({item.reviewCount}件)</span>
+                    </div>
+                  )}
+
+                  <div className={styles.priceRow}>
+                    <span className={styles.price}>
+                      &yen;{item.itemPrice.toLocaleString()}
+                    </span>
+                    {item.postageFlag === 0 && (
+                      <span className={styles.postageFree}>送料無料</span>
+                    )}
+                    {item.postageFlag === 1 && (
+                      <span className={styles.postage}>送料別</span>
+                    )}
+                  </div>
+                  <a
+                    href={item.affiliateUrl || item.itemUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.buyButton}
+                  >
+                    ショップへ行く →
+                  </a>
+                </div>
+              </div>
+            ))}
+            {items.length === 0 && (
+              <p className={styles.noticeText}>条件に合うスニーカーが見つかりませんでした。別のカラーやサイズをお試しください。</p>
+            )}
+          </div>
+        </>
+      )}
+    </main>
+  );
+}
