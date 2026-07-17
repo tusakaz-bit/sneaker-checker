@@ -1,4 +1,4 @@
-// URL用の文字列に変換 (例: "Air Force 1" -> "air-force-1")
+﻿// URL用の文字列に変換 (例: "Air Force 1" -> "air-force-1")
 export function slugify(text: string): string {
   return text
     .toString()
@@ -46,4 +46,17 @@ export function getRandomViewerCount(seed: string): number {
   }
   // 1〜15の乱数風
   return Math.abs(hash % 15) + 1;
+}
+// 楽天のスパムっぽい商品名を綺麗にする関数
+export function cleanRakutenItemName(rawName: string): string {
+  if (!rawName) return '';
+  let cleaned = rawName;
+  cleaned = cleaned.replace(/【[^】]*】/g, ' ');
+  cleaned = cleaned.replace(/\[[^\]]*\]/g, ' ');
+  cleaned = cleaned.replace(/＼[^／]*／/g, ' ');
+  cleaned = cleaned.replace(/★[^★]*★/g, ' ');
+  cleaned = cleaned.replace(/※[^※]*※/g, ' ');
+  cleaned = cleaned.replace(/(送料無料|あす楽|正規品|新品|国内|海外|限定|メンズ|レディース|ユニセックス|スニーカー|シューズ)/g, ' ');
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  return cleaned || rawName;
 }

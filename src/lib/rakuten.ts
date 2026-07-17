@@ -1,3 +1,4 @@
+﻿import { cleanRakutenItemName } from './utils';
 export async function searchRakutenItems(options: { keyword: string, brand?: string, sort?: string }) {
   const { keyword: rawKeyword, brand, sort = '+itemPrice' } = options;
   
@@ -50,7 +51,7 @@ export async function searchRakutenItems(options: { keyword: string, brand?: str
     throw new Error(`楽天API Error: ${errMsg}`);
   }
 
-  let items = data.Items ? data.Items.map((item: any) => item.Item) : [];
+  let items = data.Items ? data.Items.map((item: any) => { if(item.Item){ item.Item.originalName = item.Item.itemName || ''; item.Item.itemName = cleanRakutenItemName(item.Item.originalName); } return item.Item; }) : [];
 
   // ブランド厳密フィルタリング
   if (brand) {
