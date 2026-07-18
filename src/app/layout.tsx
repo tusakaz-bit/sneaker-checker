@@ -16,7 +16,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', background: 'var(--surface)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 100 }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.05em' }}>
+            <a href="/" style={{ color: 'var(--foreground)', textDecoration: 'none' }}>
+              SNEAKER<span style={{ color: 'var(--accent)' }}>CHECKER</span>
+            </a>
+          </div>
+          <nav>
+            <a href="/" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>Browse</a>
+          </nav>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }
