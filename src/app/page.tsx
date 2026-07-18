@@ -114,9 +114,9 @@ export default function Home() {
       {/* ヒーローセクション */}
       <section className={styles.heroSection}>
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>プレ値・入手困難スニーカーの最安値比較</h1>
+          <h1 className={styles.heroTitle}>Find Your Best Pair</h1>
           <p className={styles.heroSubtitle}>
-            リアルタイムで在庫と最安値をチェック。安心できる優良ショップだけを厳選。
+            リアルタイムで価格を比較して、あなただけの一足を見つけよう。
           </p>
 
           <div className={styles.searchBox}>
