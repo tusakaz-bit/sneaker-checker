@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={inter.className} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', background: 'var(--surface)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 100 }}>
           <div style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.05em' }}>
             <a href="/" style={{ color: 'var(--foreground)', textDecoration: 'none' }}>
@@ -27,7 +27,24 @@ export default function RootLayout({
             <a href="/" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>トップへ</a>
           </nav>
         </header>
+        
         {children}
+        <footer style={{ width: '100%', padding: '3rem 1rem', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', background: 'var(--surface)', marginTop: 'auto' }}>
+          {/* 楽天ウェブサービス クレジット表記 (必須) */}
+          <a href="https://webservice.rakuten.co.jp/" target="_blank" rel="noopener noreferrer" style={{ opacity: 0.8, transition: 'opacity 0.2s' }} >
+            <img src="https://webservice.rakuten.co.jp/img/credit/200709/credit_22121.gif" style={{ border: 0 }} alt="Rakuten Web Service Center" title="Rakuten Web Service Center" width="221" height="21" />
+          </a>
+          
+          <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem' }}>
+            <a href="#" style={{ color: 'var(--foreground-muted)', textDecoration: 'none' }}>プライバシーポリシー (準備中)</a>
+            <a href="#" style={{ color: 'var(--foreground-muted)', textDecoration: 'none' }}>お問い合わせ (準備中)</a>
+          </div>
+
+          <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)' }}>
+            &copy; {new Date().getFullYear()} SNEAKER CHECKER. All rights reserved.
+          </p>
+        </footer>
+
       </body>
     </html>
   );
