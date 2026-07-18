@@ -86,6 +86,26 @@ export default async function SneakerPage(props: { params: Params, searchParams:
         </div>
       ) : (
         <>
+          <div className={styles.seoContent} style={{ background: 'rgba(255,255,255,0.03)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem', lineHeight: '1.6' }}>
+            <h2 style={{ fontSize: '1.1rem', marginBottom: '0.8rem', color: 'var(--accent)' }}>💡 {displayBrand} {displayModel} の価格・在庫分析レポート</h2>
+            {items.length > 0 ? (() => {
+              const lowestPrice = Math.min(...items.map((i: any) => i.itemPrice));
+              const freeShippingCount = items.filter((i: any) => i.postageFlag === 0).length;
+              return (
+                <p>
+                  現在、楽天に出品されている<strong>「{displayBrand} {displayModel} {color} {size}」</strong>の在庫状況を独自システムで分析したところ、<strong>{items.length}件の優良在庫</strong>が見つかりました。<br />
+                  現在の<strong>最安値は ¥{lowestPrice.toLocaleString()}</strong> からとなっています。そのうち、送料無料のショップは{freeShippingCount}店舗存在します。<br />
+                  偽物や悪質な出品を避けるため、当店では「ショップレビューが高く、信頼できる出品者」を中心に、安い順で並び替えて掲載しています。プレ値変動の前に、マイサイズがないかチェックしてみてください。
+                </p>
+              );
+            })() : (
+              <p>
+                現在、<strong>「{displayBrand} {displayModel} {color} {size}」</strong>に一致する優良在庫は見つかりませんでした。<br />
+                このモデルは非常に人気が高いため、入荷してもすぐに売り切れてしまう傾向があります。サイズやカラーの指定を外すか、別のモデルで再検索してみてください。
+              </p>
+            )}
+          </div>
+
           <div className={styles.noticeBoard}>
             <p className={styles.noticeText}>
               ⚠️ 検索精度を高めるため、8,000円以下の安すぎる小物（靴紐等）は自動的に除外しています。
