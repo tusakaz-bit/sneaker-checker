@@ -114,9 +114,9 @@ export default function Home() {
       {/* ヒーローセクション */}
       <section className={styles.heroSection}>
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>The Premier Sneaker Marketplace Engine</h1>
+          <h1 className={styles.heroTitle}>プレ値・入手困難スニーカーの最安値比較</h1>
           <p className={styles.heroSubtitle}>
-            Discover authentic sneakers. Compare prices in real-time.
+            リアルタイムで在庫と最安値をチェック。安心できる優良ショップだけを厳選。
           </p>
 
           <div className={styles.searchBox}>
@@ -138,26 +138,26 @@ export default function Home() {
             {searchMode === "cascade" ? (
               <div className={styles.cascadeGrid}>
                 <div className={styles.filterGroup}>
-                  <label className={styles.label}>Brand</label>
+                  <label className={styles.label}>ブランド</label>
                   <select className={styles.select} value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
                     {brands.map(b => <option key={b} value={b}>{b}</option>)}
                   </select>
                 </div>
                 <div className={styles.filterGroup}>
-                  <label className={styles.label}>Model</label>
+                  <label className={styles.label}>モデル</label>
                   <select className={styles.select} value={selectedModel} onChange={(e) => setSelectedModel(e.target.value)}>
                     {models.map(m => <option key={m} value={m}>{m}</option>)}
                   </select>
                 </div>
                 <div className={styles.filterGroup}>
-                  <label className={styles.label}>Colorway</label>
+                  <label className={styles.label}>カラー</label>
                   <select className={styles.select} value={selectedColor} onChange={(e) => setSelectedColor(e.target.value)}>
-                    <option value="指定なし">Any</option>
+                    <option value="指定なし">指定なし</option>
                     {colors.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className={styles.filterGroup}>
-                  <label className={styles.label}>Size</label>
+                  <label className={styles.label}>サイズ</label>
                   <select className={styles.select} value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)}>
                     {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
@@ -166,18 +166,18 @@ export default function Home() {
             ) : (
               <div className={styles.cascadeGrid}>
                 <div className={styles.filterGroup} style={{ gridColumn: "span 3" }}>
-                  <label className={styles.label}>Search</label>
+                  <label className={styles.label}>検索</label>
                   <input
                     type="text"
                     className={styles.input}
                     value={freeTextModel}
                     onChange={(e) => setFreeTextModel(e.target.value)}
-                    placeholder="e.g. Jordan 1 Retro High Chicago"
+                    placeholder="例: Jordan 1 Retro High Chicago"
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                   />
                 </div>
                 <div className={styles.filterGroup}>
-                  <label className={styles.label}>Size</label>
+                  <label className={styles.label}>サイズ</label>
                   <select
                     className={styles.select}
                     value={freeTextSize}
@@ -190,7 +190,7 @@ export default function Home() {
             )}
 
             <button className={styles.searchButton} onClick={handleSearch} disabled={loading}>
-              {loading ? "Searching..." : "Search Lowest Ask"}
+              {loading ? "検索中..." : "最安値を検索"}
             </button>
           </div>
         </div>
@@ -203,13 +203,13 @@ export default function Home() {
             className={`${styles.tab} ${activeTab === "search" ? styles.activeTab : ""}`}
             onClick={() => setActiveTab("search")}
           >
-            Search Results
+            最安値検索
           </button>
           <button
             className={`${styles.tab} ${activeTab === "timeline" ? styles.activeTab : ""}`}
             onClick={() => setActiveTab("timeline")}
           >
-            Trending Now
+            トレンド新着・再入荷
           </button>
         </div>
 
@@ -223,7 +223,7 @@ export default function Home() {
 
             {searchMode === "free" && (
               loading ? (
-                <div className={styles.loading}>Searching marketplace...</div>
+                <div className={styles.loading}>スニーカーを探しています...</div>
               ) : error ? (
                 <div className={styles.noticeBoard}>
                   <p className={styles.noticeText}>❌ {error}</p>
@@ -237,7 +237,7 @@ export default function Home() {
                           <div className={styles.pointBadge}>Pt {item.pointRate}x</div>
                         )}
                         {item.reviewCount >= 5 && item.reviewAverage >= 4.0 && (
-                          <div className={styles.popularBadge}>Popular</div>
+                          <div className={styles.popularBadge}>🔥 大人気</div>
                         )}
                       </div>
                       <div className={styles.imageContainer}>
@@ -255,7 +255,7 @@ export default function Home() {
                         <p className={styles.shopName}>{item.shopName}</p>
                         <h3 className={styles.itemName}>{item.itemName}</h3>
                         <div className={styles.priceRow}>
-                          <span className={styles.priceLabel}>Lowest Ask</span>
+                          <span className={styles.priceLabel}>最安値</span>
                           <span className={styles.price}>
                             &yen;{item.itemPrice.toLocaleString()}
                           </span>
@@ -265,12 +265,12 @@ export default function Home() {
                   ))}
                 </div>
               ) : !loading && (
-                 <p className={styles.noticeText}>No sneakers found matching your criteria.</p>
+                 <p className={styles.noticeText}>条件に合うスニーカーが見つかりませんでした。別のキーワードをお試しください。</p>
               )
             )}
 
             <section className={styles.seoLinksSection} style={{ marginTop: '4rem', padding: '2rem 0', borderTop: '1px solid var(--border)' }}>
-              <h2 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', textAlign: 'left', fontWeight: 'bold' }}>Popular Brands</h2>
+              <h2 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', textAlign: 'left', fontWeight: 'bold' }}>人気のブランド・モデル一覧</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.5rem' }}>
                 {Object.keys(SNEAKER_CATALOG).map(b => (
                   <div key={b}>
@@ -293,15 +293,15 @@ export default function Home() {
           <>
             <div className={styles.timelineHeader}>
               <p className={styles.subtitle} style={{ margin: 0, textAlign: "left" }}>
-                Latest restocks and trending drops
+                人気モデルの最新入荷・更新情報を表示しています
               </p>
               <button className={styles.refreshButton} onClick={fetchTimeline} disabled={timelineLoading}>
-                {timelineLoading ? "Loading..." : "Refresh"}
+                {timelineLoading ? "更新中..." : "🔄 最新を読み込む"}
               </button>
             </div>
 
             {timelineLoading ? (
-              <div className={styles.loading}>Fetching latest drops...</div>
+              <div className={styles.loading}>新着情報を取得中...</div>
             ) : timelineError ? (
               <div className={styles.noticeBoard}>
                 <p className={styles.noticeText}>❌ {timelineError}</p>
@@ -330,12 +330,12 @@ export default function Home() {
                     <div className={styles.cardContent}>
                       <div className={styles.viewingCount}>
                         <div className={styles.liveDot}></div>
-                        {getRandomViewerCount(item.itemCode)} viewing
+                        現在{getRandomViewerCount(item.itemCode)}人が閲覧中
                       </div>
                       <p className={styles.shopName}>{item.shopName}</p>
                       <h3 className={styles.itemName}>{item.itemName}</h3>
                       <div className={styles.priceRow}>
-                        <span className={styles.priceLabel}>Lowest Ask</span>
+                        <span className={styles.priceLabel}>最安値</span>
                         <span className={styles.price}>
                           &yen;{item.itemPrice.toLocaleString()}
                         </span>
@@ -344,7 +344,7 @@ export default function Home() {
                   </a>
                 ))}
                 {timelineItems.length === 0 && !timelineLoading && (
-                  <p className={styles.noticeText}>No new drops found.</p>
+                  <p className={styles.noticeText}>新着情報が見つかりませんでした。</p>
                 )}
               </div>
             )}

@@ -72,7 +72,7 @@ export default async function SneakerPage(props: { params: Params, searchParams:
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '1rem' }}>
             <Link href="/" style={{ color: 'var(--foreground-muted)', textDecoration: 'none', fontSize: '0.875rem' }}>
-              ← Back to Browse
+              ← トップページに戻る
             </Link>
           </div>
           
@@ -91,7 +91,7 @@ export default async function SneakerPage(props: { params: Params, searchParams:
               
               {items.length > 0 && (
                 <div style={{ background: 'var(--background)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border)', display: 'inline-block' }}>
-                  <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--foreground-muted)', marginBottom: '0.25rem' }}>Lowest Ask</p>
+                  <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--foreground-muted)', marginBottom: '0.25rem' }}>最安値</p>
                   <p style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--foreground)' }}>&yen;{lowestPrice.toLocaleString()}</p>
                 </div>
               )}
@@ -133,7 +133,7 @@ export default async function SneakerPage(props: { params: Params, searchParams:
             </div>
 
             {items.length > 0 && (
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.5rem' }}>Available Listings ({items.length})</h2>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.5rem' }}>出品一覧 ({items.length})</h2>
             )}
             <div className={styles.grid}>
               {items.map((item: any) => (
@@ -143,7 +143,7 @@ export default async function SneakerPage(props: { params: Params, searchParams:
                       <div className={styles.pointBadge}>Pt {item.pointRate}x</div>
                     )}
                     {item.reviewCount >= 5 && item.reviewAverage >= 4.0 && (
-                      <div className={styles.popularBadge}>Popular</div>
+                      <div className={styles.popularBadge}>🔥 大人気</div>
                     )}
                   </div>
                   <div className={styles.imageContainer}>
@@ -161,7 +161,7 @@ export default async function SneakerPage(props: { params: Params, searchParams:
                     <p className={styles.shopName}>{item.shopName}</p>
                     <h3 className={styles.itemName}>{item.itemName}</h3>
                     <div className={styles.priceRow}>
-                      <span className={styles.priceLabel}>Lowest Ask</span>
+                      <span className={styles.priceLabel}>最安値</span>
                       <span className={styles.price}>
                         &yen;{item.itemPrice.toLocaleString()}
                       </span>

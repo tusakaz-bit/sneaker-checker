@@ -24,7 +24,7 @@ export default function RootLayout({
             </a>
           </div>
           <nav>
-            <a href="/" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>Browse</a>
+            <a href="/" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>トップへ</a>
           </nav>
         </header>
         {children}
