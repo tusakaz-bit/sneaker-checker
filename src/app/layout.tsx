@@ -36,8 +36,8 @@ export default function RootLayout({
           </a>
           
           <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem' }}>
-            <a href="#" style={{ color: 'var(--foreground-muted)', textDecoration: 'none' }}>プライバシーポリシー (準備中)</a>
-            <a href="#" style={{ color: 'var(--foreground-muted)', textDecoration: 'none' }}>お問い合わせ (準備中)</a>
+            <a href="/privacy" style={{ color: 'var(--foreground-muted)', textDecoration: 'none' }}>プライバシーポリシー</a>
+            <a href="/contact" style={{ color: 'var(--foreground-muted)', textDecoration: 'none' }}>お問い合わせ</a>
           </div>
 
           <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)' }}>
