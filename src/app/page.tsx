@@ -116,7 +116,7 @@ export default function Home() {
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>Find Your Best Pair</h1>
           <p className={styles.heroSubtitle}>
-            リアルタイムで価格を比較して、あなただけの一足を見つけよう。
+            人気のレアスニーカーや限定モデルの最安値をリアルタイムで一括比較。<br/>各ショップの価格差がひと目でわかるので、もう相場より高く買ってしまう心配はありません。
           </p>
 
           <div className={styles.searchBox}>
