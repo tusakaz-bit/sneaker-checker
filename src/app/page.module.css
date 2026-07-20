@@ -1,4 +1,4 @@
-.main {
+﻿.main {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
   margin-bottom: 2rem;
 }
 
-/* タブ UI */
+/* 繧ｿ繝・UI */
 .tabs {
   display: flex;
   gap: 1rem;
@@ -67,7 +67,7 @@
   border-radius: 2px 2px 0 0;
 }
 
-/* モード切り替え (カスケード vs 自由入力) */
+/* 繝｢繝ｼ繝牙・繧頑崛縺・(繧ｫ繧ｹ繧ｱ繝ｼ繝・vs 閾ｪ逕ｱ蜈･蜉・ */
 .modeToggle {
   display: flex;
   gap: 0.5rem;
@@ -100,7 +100,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* 検索フィルターエリア */
+/* 讀懃ｴ｢繝輔ぅ繝ｫ繧ｿ繝ｼ繧ｨ繝ｪ繧｢ */
 .searchSection {
   width: 100%;
   background: var(--surface);
@@ -168,7 +168,7 @@
   transform: scale(0.98);
 }
 
-/* 注意書き */
+/* 豕ｨ諢乗嶌縺・*/
 .noticeBoard {
   background: rgba(255, 149, 0, 0.1);
   border-left: 4px solid #ff9500;
@@ -184,7 +184,7 @@
   line-height: 1.5;
 }
 
-/* スニーカーカードのグリッド */
+/* 繧ｹ繝九・繧ｫ繝ｼ繧ｫ繝ｼ繝峨・繧ｰ繝ｪ繝・ラ */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -381,7 +381,7 @@
   50% { opacity: 1; }
   100% { opacity: 0.6; }
 }
-/* Phase 1: 信頼性向上のスタイル追加 */
+/* Phase 1: 菫｡鬆ｼ諤ｧ蜷台ｸ翫・繧ｹ繧ｿ繧､繝ｫ霑ｽ蜉 */
 .shopInfo {
   display: flex;
   align-items: center;
@@ -433,7 +433,7 @@
   color: white;
   box-shadow: 0 1px 3px rgba(52, 199, 89, 0.3);
 }
-/* Phase 3: コンバージョン最適化のスタイル追加 */
+/* Phase 3: 繧ｳ繝ｳ繝舌・繧ｸ繝ｧ繝ｳ譛驕ｩ蛹悶・繧ｹ繧ｿ繧､繝ｫ霑ｽ蜉 */
 .buyButton {
   position: relative;
   overflow: hidden;
@@ -445,7 +445,7 @@
   box-shadow: 0 4px 12px rgba(230, 0, 18, 0.3);
 }
 
-/* Shine（光沢）エフェクト */
+/* Shine・亥・豐｢・峨お繝輔ぉ繧ｯ繝・*/
 .buyButton::after {
   content: "";
   position: absolute;
@@ -469,7 +469,7 @@
   100% { left: 200%; }
 }
 
-/* カードの浮遊感強化 */
+/* 繧ｫ繝ｼ繝峨・豬ｮ驕頑─蠑ｷ蛹・*/
 .card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -479,7 +479,7 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* バッジのスタイル */
+/* 繝舌ャ繧ｸ縺ｮ繧ｹ繧ｿ繧､繝ｫ */
 .badgeContainer {
   position: absolute;
   top: 10px;
@@ -488,6 +488,7 @@
   flex-direction: column;
   gap: 5px;
   align-items: flex-end;
+  z-index: 20;
 }
 
 .pointBadge {
@@ -499,6 +500,7 @@
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   animation: pulsePoint 2s infinite;
+  white-space: nowrap;
 }
 
 @keyframes pulsePoint {
@@ -515,9 +517,10 @@
   font-size: 0.75rem;
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  white-space: nowrap;
 }
 
-/* タイムライン用の閲覧中表示 */
+/* 繧ｿ繧､繝繝ｩ繧､繝ｳ逕ｨ縺ｮ髢ｲ隕ｧ荳ｭ陦ｨ遉ｺ */
 .viewingCount {
   font-size: 0.8rem;
   color: #ff4500;
@@ -541,7 +544,7 @@
   100% { transform: scale(2.5); opacity: 0; }
 }
 
-/* 0と5のつく日バナー */
+/* 0縺ｨ5縺ｮ縺､縺乗律繝舌リ繝ｼ */
 .saleBanner {
   background: linear-gradient(90deg, #e60012, #ff4500);
   color: white;
@@ -764,3 +767,4 @@
   font-weight: 800;
   color: var(--foreground);
 }
+

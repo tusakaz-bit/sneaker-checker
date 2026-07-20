@@ -84,3 +84,78 @@ export async function searchRakutenItems(options: { keyword: string, brand?: str
 
   return items;
 }
+
+export async function getTimelineItems() {
+  const appId = process.env.RAKUTEN_APP_ID;
+  const accessKey = process.env.RAKUTEN_ACCESS_KEY;
+  
+  let rawUrl = process.env.RAKUTEN_APP_URL || 'http://localhost:3000';
+  const appUrl = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+
+  if (!appId || !accessKey) {
+    throw new Error('環境変数が設定されていません。.env.localを確認してください。');
+  }
+
+  const watchwords = ['Nike Dunk', 'On Cloud', 'Salomon'];
+
+  try {
+    const fetchPromises = watchwords.map(async (keyword) => {
+      const finalKeyword = `${keyword} スニーカー`;
+      
+      const params = new URLSearchParams({
+        applicationId: appId,
+        accessKey: accessKey,
+        keyword: finalKeyword,
+        availability: '1',
+        sort: '-updateTimestamp',
+        hits: '10',
+        imageFlag: '1',
+        format: 'json',
+        minPrice: '8000',
+      });
+
+      const url = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${params.toString()}`;
+
+      const response = await fetch(url, {
+        headers: {
+          'Referer': appUrl,
+          'Origin': appUrl,
+        },
+        next: { revalidate: 60 },
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.errors || data.error) {
+        throw new Error(`API Error for ${keyword}: ` + JSON.stringify(data));
+      }
+      
+      return data.Items ? data.Items.map((item: any) => {
+        if(item.Item){ 
+          item.Item.originalName = item.Item.itemName || ''; 
+          item.Item.itemName = cleanRakutenItemName(item.Item.originalName); 
+        }
+        return { ...item.Item, searchKeyword: keyword };
+      }) : [];
+    });
+
+    const results = await Promise.all(fetchPromises);
+
+    const timelineItems = [];
+    const maxLength = Math.max(...results.map(arr => arr.length));
+    
+    for (let i = 0; i < maxLength; i++) {
+      for (let j = 0; j < results.length; j++) {
+        if (results[j][i]) {
+          timelineItems.push(results[j][i]);
+        }
+      }
+    }
+
+    return timelineItems;
+  } catch (error) {
+    console.error('楽天API通信エラー(Timeline):', error);
+    return [];
+  }
+}
+
+
