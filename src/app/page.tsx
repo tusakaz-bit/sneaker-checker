@@ -95,7 +95,6 @@ export default async function Home() {
             ))}
           </div>
         ) : (
-) : (
           <p className={styles.noticeText}>新着情報が見つかりませんでした。</p>
         )}
 
