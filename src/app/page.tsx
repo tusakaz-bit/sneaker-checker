@@ -2,14 +2,31 @@
 import { SNEAKER_CATALOG } from "./data/sneakerCatalog";
 import { slugify, getRakutenDayInfo, getRandomViewerCount } from "@/lib/utils";
 import Link from "next/link";
-import { getTimelineItems } from "@/lib/rakuten";
+import { supabase } from "@/lib/supabase";
 import HeroSearchBox from "@/components/HeroSearchBox";
 
 export default async function Home() {
   const rakutenDay = getRakutenDayInfo();
   
   // 完全SSR: サーバー側でタイムライン（人気商品）を取得
-  const timelineItems = await getTimelineItems();
+  
+  // 完全SSR: サーバー側でタイムライン（人気商品）をデータベースから取得
+  const { data: dbItems } = await supabase
+    .from('sneakers')
+    .select('*, price_histories(*)')
+    .limit(10);
+    
+  const timelineItems = (dbItems || []).map((snk: any) => {
+    let currentLowest = 0;
+    if (snk.price_histories && snk.price_histories.length > 0) {
+      const sorted = snk.price_histories.sort((a: any, b: any) => 
+        new Date(b.recorded_at).getTime() - new Date(a.recorded_at).getTime()
+      );
+      currentLowest = sorted[0].lowest_price;
+    }
+    return { ...snk, currentLowest };
+  });
+
 
   return (
     <main className={styles.main}>
@@ -42,21 +59,22 @@ export default async function Home() {
           </p>
         </div>
 
+        
         {timelineItems.length > 0 ? (
           <div className={styles.grid}>
             {timelineItems.map((item: any, idx: number) => (
-              <a href={item.affiliateUrl || item.itemUrl} target="_blank" rel="noopener noreferrer" key={`${item.itemCode}-${idx}`} className={styles.card}>
+              <Link href={`/item/${item.style_code}`} key={`${item.style_code}-${idx}`} className={styles.card}>
                 <div className={styles.badgeContainer}>
                   <div className={styles.newBadge}>NEW</div>
-                  {item.searchKeyword && (
-                    <div className={styles.keywordBadge}>{item.searchKeyword}</div>
+                  {item.currentLowest > 0 && item.list_price && item.currentLowest < item.list_price && (
+                    <div className={styles.popularBadge} style={{ background: '#34c759' }}>定価割れ</div>
                   )}
                 </div>
                 <div className={styles.imageContainer}>
-                  {item.mediumImageUrls && item.mediumImageUrls.length > 0 ? (
+                  {item.image_url ? (
                     <img
-                      src={item.mediumImageUrls[0].imageUrl.replace('?_ex=128x128', '?_ex=400x400')}
-                      alt={item.itemName}
+                      src={item.image_url}
+                      alt={item.name}
                       className={styles.image}
                     />
                   ) : (
@@ -64,23 +82,20 @@ export default async function Home() {
                   )}
                 </div>
                 <div className={styles.cardContent}>
-                  <div className={styles.viewingCount}>
-                    <div className={styles.liveDot}></div>
-                    現在{getRandomViewerCount(item.itemCode)}人が閲覧中
-                  </div>
-                  <p className={styles.shopName}>{item.shopName}</p>
-                  <h3 className={styles.itemName}>{item.itemName}</h3>
+                  <p className={styles.shopName}>{item.brand} {item.model}</p>
+                  <h3 className={styles.itemName} style={{ minHeight: '2.6em' }}>{item.name}</h3>
                   <div className={styles.priceRow}>
                     <span className={styles.priceLabel}>最安値</span>
                     <span className={styles.price}>
-                      &yen;{item.itemPrice.toLocaleString()}
+                      {item.currentLowest > 0 ? `¥${item.currentLowest.toLocaleString()}` : '-'}
                     </span>
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         ) : (
+) : (
           <p className={styles.noticeText}>新着情報が見つかりませんでした。</p>
         )}
 
