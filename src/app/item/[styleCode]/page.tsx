@@ -160,7 +160,11 @@ export default async function ItemPage({ params }: PageProps) {
 
             {currentLowest > 0 && (
               <a 
-                href={`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(sneaker.style_code)}/?s=2`}
+                href={
+                  process.env.RAKUTEN_AFFILIATE_ID
+                    ? `https://hb.afl.rakuten.co.jp/hgc/${process.env.RAKUTEN_AFFILIATE_ID}/?pc=${encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(sneaker.style_code)}/?s=2`)}`
+                    : `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(sneaker.style_code)}/?s=2`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.buyButton}
