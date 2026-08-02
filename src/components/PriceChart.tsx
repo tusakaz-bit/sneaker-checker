@@ -6,7 +6,13 @@ interface PriceChartProps { data: any[] }
 
 export default function PriceChart({ data }: PriceChartProps) {
   if (!data || data.length === 0) {
-    return <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>���i���ڃf�[�^������܂���iCron�����s�����Ǝ����I�ɒ~�ς���܂��j</div>;
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center', color: '#999', fontSize: '0.9rem' }}>
+        価格データがまだ蓄積されていません。
+        <br />
+        Cronジョブが実行されると自動的に追加されます。
+      </div>
+    );
   }
   return (
     <div style={{ width: '100%', height: 300, marginTop: '20px' }}>
@@ -20,13 +26,13 @@ export default function PriceChart({ data }: PriceChartProps) {
           />
           <YAxis
             domain={['auto', 'auto']}
-            tickFormatter={(value) => '¥' + Number(value).toLocaleString()}
+            tickFormatter={(value) => 'JP' + Number(value).toLocaleString()}
             stroke='#999'
             width={80}
           />
           <Tooltip
-            formatter={(value: any) => ['¥' + Number(value ?? 0).toLocaleString(), '最安値']}
-            labelFormatter={(label: any) => { const d = new Date(String(label)); return d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日'; }}
+            formatter={(value: any) => ['JP' + Number(value ?? 0).toLocaleString(), 'Lowest Price']}
+            labelFormatter={(label: any) => { const d = new Date(String(label)); return d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate(); }}
           />
           <Line type='monotone' dataKey='lowest_price' stroke='#ff4500' strokeWidth={3} dot={{ r: 4, fill: '#ff4500', strokeWidth: 0 }} activeDot={{ r: 6 }} />
         </LineChart>

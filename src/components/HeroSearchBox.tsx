@@ -49,7 +49,7 @@ export default function HeroSearchBox() {
       if (selectedColor !== "指定なし") params.set('color', selectedColor);
       params.set('size', selectedSize);
       
-      router.push(`/sneakers/${brandSlug}/${modelSlug}?${params.toString()}`);
+      router.push(`/model/${modelSlug}?${params.toString()}`);
     } else {
       if (!freeTextModel.trim()) {
         alert("キーワードを入力してください。");

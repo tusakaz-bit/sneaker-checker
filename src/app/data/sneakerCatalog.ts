@@ -46,6 +46,10 @@ export const SNEAKER_CATALOG: Record<string, Record<string, string[]>> = {
     "MEXICO 66": ["Yellow/Black", "White/Blue", "Silver"],
     "DELECITY": ["White/Green", "White/Orange", "Black"],
     "NIPPON MADE": ["Black", "White", "Navy"]
+  },
+  "Converse": {
+    "Chuck 70 (CT70)": ["Black", "Parchment", "Stüssy", "COMME des GARÇONS PLAY"],
+    "Addict": ["N.HOOLYWOOD", "Chuck Taylor Canvas", "One Star"]
   }
 };
 

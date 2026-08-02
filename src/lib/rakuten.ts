@@ -21,7 +21,8 @@ export async function searchRakutenItems(options: { keyword: string, brand?: str
     return []; // キーワード不足の場合は空配列を返す
   }
 
-  const params = new URLSearchParams({
+  const affiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID;
+  const paramsObj: any = {
     applicationId: appId,
     accessKey: accessKey,
     keyword: keyword,
@@ -31,9 +32,14 @@ export async function searchRakutenItems(options: { keyword: string, brand?: str
     imageFlag: '1',
     format: 'json',
     minPrice: '8000',
-  });
+    genreId: '558885',
+  };
+  if (affiliateId) {
+    paramsObj.affiliateId = affiliateId;
+  }
+  const searchParams = new URLSearchParams(paramsObj);
 
-  const url = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${params.toString()}`;
+  const url = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${searchParams.toString()}`;
 
   const response = await fetch(url, {
     headers: {
@@ -102,7 +108,8 @@ export async function getTimelineItems() {
     const fetchPromises = watchwords.map(async (keyword) => {
       const finalKeyword = `${keyword} スニーカー`;
       
-      const params = new URLSearchParams({
+      const affiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID;
+      const paramsObj: any = {
         applicationId: appId,
         accessKey: accessKey,
         keyword: finalKeyword,
@@ -112,9 +119,14 @@ export async function getTimelineItems() {
         imageFlag: '1',
         format: 'json',
         minPrice: '8000',
-      });
+        genreId: '558885',
+      };
+      if (affiliateId) {
+        paramsObj.affiliateId = affiliateId;
+      }
+      const searchParams = new URLSearchParams(paramsObj);
 
-      const url = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${params.toString()}`;
+      const url = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${searchParams.toString()}`;
 
       const response = await fetch(url, {
         headers: {

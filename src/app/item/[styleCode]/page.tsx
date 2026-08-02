@@ -1,8 +1,15 @@
+import { getRakutenSearchQuery } from '@/lib/searchQuery';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import PriceChart from '@/components/PriceChart';
 import styles from '@/app/page.module.css';
+import SneakerImage from '@/components/SneakerImage';
+import sneakerContent from '@/data/sneakerContent.json';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import { slugify } from '@/lib/utils';
 
 interface PageProps {
   params: Promise<{ styleCode: string }>;
@@ -23,7 +30,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${sneaker.name} (${sneaker.style_code}) の相場・最安値推移 | Sneaker Checker`,
-    description: `${sneaker.brand} ${sneaker.model} ${sneaker.name} (${sneaker.style_code}) の現在の最安値や過去の価格推移グラフを確認できます。`,
+    description: (() => {
+      const c = (sneakerContent as any)[sneaker.style_code];
+      const base = `${sneaker.brand} ${sneaker.model} ${sneaker.name} (${sneaker.style_code}) の最安値・価格推移グラフを掲載。`;
+      const hist = c ? c.history.substring(0, 60) + '…' : '';
+      return base + hist;
+    })(),
+    alternates: {
+      canonical: `/item/${styleCode}`,
+    },
   };
 }
 
@@ -75,41 +90,58 @@ export default async function ItemPage({ params }: PageProps) {
 
   let explanationText = `${sneaker.name} (${sneaker.style_code}) の`;
   if (currentLowest > 0) {
-    explanationText += `現在の最安値は ${currentLowest.toLocaleString()} 円です。`;
+    explanationText += `現在の最安値は ¥${currentLowest.toLocaleString()} です。`;
     if (averagePrice > 0) {
       const diff = Math.abs(currentLowest - averagePrice);
       const diffPercent = Math.round((diff / averagePrice) * 100);
       const highLow = currentLowest > averagePrice ? '高い' : '安い';
-      explanationText += `過去の平均価格（${averagePrice.toLocaleString()} 円）と比較して約 ${diffPercent}% ${highLow}価格帯で推移しています。`;
+      explanationText += `過去の平均価格（¥${averagePrice.toLocaleString()}）と比較して約 ${diffPercent}% ${highLow}価格帯で推移しています。`;
     }
-    if (divergenceRate !== null) {
+    if (divergenceRate !== null && sneaker.list_price) {
       const overUnder = divergenceRate > 0 ? 'プレ値' : 'お買い得';
-      explanationText += `定価 ${sneaker.list_price.toLocaleString()} 円に対する乖離率は ${Math.abs(divergenceRate)}%（${overUnder}）となっています。`;
+      explanationText += `国内定価 ¥${sneaker.list_price.toLocaleString()} に対する乖離率は ${Math.abs(divergenceRate)}%（${overUnder}）となっています。`;
     }
   } else {
-    explanationText += `現在、価格データが蓄積されていません。`;
+    explanationText += `現在、価格データをリアルタイムで同期・更新中です。楽天市場で最新在庫や価格情報を確認できます。`;
   }
+
+  const contentData = (sneakerContent as any)[sneaker.style_code];
+  const productDescription = contentData && contentData.history
+    ? contentData.history.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...'
+    : `${sneaker.brand} ${sneaker.model} ${sneaker.name} (${sneaker.style_code}) の最安値・価格推移データを掲載しています。`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: sneaker.name,
     image: sneaker.image_url,
+    description: productDescription,
     brand: {
       '@type': 'Brand',
       name: sneaker.brand
     },
     model: sneaker.model,
     productID: sneaker.style_code,
-    ...(currentLowest > 0 && {
-      offers: {
-        '@type': 'AggregateOffer',
-        lowPrice: currentLowest,
-        priceCurrency: 'JPY',
-        offerCount: histories?.[histories.length - 1]?.shop_count || 1
-      }
-    })
+    offers: currentLowest > 0 
+      ? {
+          '@type': 'AggregateOffer',
+          lowPrice: currentLowest,
+          priceCurrency: 'JPY',
+          offerCount: histories?.[histories.length - 1]?.shop_count || 1,
+          availability: 'https://schema.org/InStock'
+        }
+      : {
+          '@type': 'Offer',
+          price: 0,
+          priceCurrency: 'JPY',
+          availability: 'https://schema.org/OutOfStock'
+        }
   };
+
+  const affiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID || '';
+  const buyUrl = affiliateId
+    ? `https://hb.afl.rakuten.co.jp/hgc/${affiliateId}/?pc=${encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(getRakutenSearchQuery(sneaker))}/558885/?s=2`)}`
+    : `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(getRakutenSearchQuery(sneaker))}/558885/?s=2`;
 
   return (
     <div className={styles.main}>
@@ -118,14 +150,18 @@ export default async function ItemPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
+      
       <div className={styles.contentArea}>
+        <Breadcrumbs items={[
+          { label: 'トップ', href: '/' },
+          { label: sneaker.brand, href: '/brand/' + slugify(sneaker.brand) },
+          { label: sneaker.model, href: '/model/' + slugify(sneaker.model) },
+          { label: sneaker.name, href: '/item/' + sneaker.style_code }
+        ]} />
+
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', marginBottom: '3rem' }}>
           <div style={{ flex: '1 1 300px', maxWidth: '500px', background: 'var(--surface)', borderRadius: '12px', padding: '2rem', display: 'flex', justifyContent: 'center' }}>
-            <img 
-              src={sneaker.image_url || 'https://via.placeholder.com/400?text=No+Image'} 
-              alt={sneaker.name} 
-              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
-            />
+            <SneakerImage src={sneaker.image_url} alt={sneaker.name} styleCode={sneaker.style_code} model={sneaker.model} style={{width: '100%', height: 'auto', objectFit: 'contain' }} />
           </div>
 
           <div style={{ flex: '2 1 400px' }}>
@@ -158,21 +194,15 @@ export default async function ItemPage({ params }: PageProps) {
               <p>{explanationText}</p>
             </div>
 
-            {currentLowest > 0 && (
-              <a 
-                href={
-                  process.env.RAKUTEN_AFFILIATE_ID
-                    ? `https://hb.afl.rakuten.co.jp/hgc/${process.env.RAKUTEN_AFFILIATE_ID}/?pc=${encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(sneaker.style_code)}/?s=2`)}`
-                    : `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(sneaker.style_code)}/?s=2`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.buyButton}
-                style={{ display: 'block', width: '100%', padding: '1rem', background: '#bf0000', color: 'white', textAlign: 'center', borderRadius: '8px', fontWeight: 'bold', fontSize: '1.1rem', textDecoration: 'none' }}
-              >
-                楽天市場で最安値ショップを見る
-              </a>
-            )}
+            <a 
+              href={buyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.buyButton}
+              style={{ display: 'block', width: '100%', padding: '1rem', background: '#bf0000', color: 'white', textAlign: 'center', borderRadius: '8px', fontWeight: 'bold', fontSize: '1.1rem', textDecoration: 'none' }}
+            >
+              楽天市場で最安値ショップを見る
+            </a>
           </div>
         </div>
 
@@ -180,6 +210,34 @@ export default async function ItemPage({ params }: PageProps) {
           <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem' }}>過去90日間の最安値推移</h2>
           <PriceChart data={histories || []} />
         </div>
+
+        {/* 解説テキストセクション */}
+        {(() => {
+          const content = (sneakerContent as any)[sneaker.style_code];
+          if (!content) return null;
+          return (
+            <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+              <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span>📏</span> サイズ感
+                </h2>
+                <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--foreground-muted)' }}>{content.size_guide}</p>
+              </div>
+              <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span>📖</span> モデルの歴史
+                </h2>
+                <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--foreground-muted)' }}>{content.history}</p>
+              </div>
+              <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span>👗</span> スタイリング
+                </h2>
+                <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--foreground-muted)' }}>{content.styling}</p>
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

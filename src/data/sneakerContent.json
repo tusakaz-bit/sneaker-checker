@@ -1,0 +1,289 @@
+{
+  "550": {
+    "catchphrase": "80年代のバスケットボールシューズを復刻したレトロコートスタイル",
+    "size_guide": "レザーアッパーで少し硬さがあり、幅もやや細めです。ハーフサイズアップをおすすめします。",
+    "history": "1989年にプロバスケットボール選手向けにリリースされた「PRIDE 550」の復刻版。Aimé Leon Dore（エメ レオン ドレ）とのコラボレーションをきっかけに火がつき、ボリューム感のあるレトロなシルエットがZ世代を中心に大ヒットしました。",
+    "styling": "デニムやチノパン、ショーツなど王道のアメカジ・カレッジスタイルにベストマッチ。足元にレトロでポップな印象を与えます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/BB550BBB-real.jpg"
+  },
+  "dunk-low": {
+    "catchphrase": "ストリートを席巻するNike不動のマスターピース",
+    "size_guide": "全体的に標準的なサイズ感ですが、足幅が広い方はハーフサイズアップを推奨します。アッパーは履き込むほどに足に馴染みます。",
+    "history": "1985年にカレッジバスケットボール用シューズとして誕生。当時の強豪校のチームカラーを落とし込んだ配色で人気を博し、後にスケーターカルチャーにも浸透。現在ではストリートアイコンとして不動の地位を築いています。",
+    "styling": "太めのデニムやカーゴパンツ、スウェットパンツなどストリート色の強いアイテムと相性抜群。シンプルなツートンカラーはどんなスタイルにもマッチします。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/DD1391-100-real.jpg"
+  },
+  "air-force-1": {
+    "catchphrase": "スニーカーカルチャーを象徴する永遠のスタンダード",
+    "size_guide": "他のNikeシューズに比べてやや大きめ（約0.5cm程度）の作りです。ジャストサイズか、ハーフサイズダウンを選ぶとフィットしやすくなります。",
+    "history": "1982年にNike初のAirを搭載したバスケットボールシューズとして登場。大統領専用機にちなんで名付けられ、音楽やファッションカルチャーと深く結びつき、世界で最も売れたスニーカーの一つとなりました。",
+    "styling": "ストリートからカジュアル、綺麗めなセットアップのハズしまで、あらゆるスタイルをカバー。特にオールホワイトは清潔感があり万能です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/CW2288-111-real.jpg"
+  },
+  "air-jordan-1-high": {
+    "catchphrase": "伝説の始まり、スニーカーヘッズのバイブル",
+    "size_guide": "足幅が細めの作りになっているため、幅広・甲高の方はハーフサイズアップがおすすめです。ハイカットなのでシューレースでしっかりと調整が可能です。",
+    "history": "1985年にマイケル・ジョーダンの初代シグネチャーモデルとして登場。当時のNBAの規定に違反するカラーリング（Bred）で罰金を科されながらも着用し続けたという伝説的なエピソードが有名です。",
+    "styling": "スニーカーを主役にしたコーディネートに最適。裾を少しクッションさせる程度のパンツ丈や、細身のパンツと合わせるとハイカットの美しいシルエットが際立ちます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/DZ5485-052-realphoto.jpg"
+  },
+  "air-jordan-1-low": {
+    "catchphrase": "デイリーに履けるジョーダンの系譜",
+    "size_guide": "Highモデルと比較してややゆとりがあり、普段履いているNikeと同じか、足幅が細い方はハーフサイズダウンでも対応可能です。",
+    "history": "Air Jordan 1のオリジナル展開時から存在するローカットモデル。バスケットボールシューズとしてのルーツを持ちながら、よりライフスタイル向けにアップデートされ、現代のストリートで高い人気を誇ります。",
+    "styling": "ハーフパンツやアンクル丈のパンツと合わせてすっきりと見せるスタイルが定番。Highよりも着脱がしやすく、日常使いに重宝します。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/553558-065-real.jpg"
+  },
+  "air-max-95": {
+    "catchphrase": "人体から着想を得たハイテクブームの火付け役",
+    "size_guide": "アッパーのレイヤード構造により甲が低く、全体的にタイトな作りです。基本的にはハーフサイズアップ（幅広の方は1サイズアップ）をおすすめします。",
+    "history": "1995年に発売され、日本では「エアマックス狩り」という社会現象を巻き起こすほどの爆発的ヒットを記録。セルジオ・ロザーノが人体の肋骨、背骨、筋肉をモチーフにデザインした画期的な一足です。",
+    "styling": "テック系のウェアやナイロンパンツ、ワイドシルエットのボトムスと好相性。足元にボリュームを出したい時に最適です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/CT1689-001-real.jpg"
+  },
+  "air-max-1": {
+    "catchphrase": "Airを可視化した歴史的プロダクトの第一歩",
+    "size_guide": "甲周りがやや低めのクラシックなシルエット。普段履いているNikeと同じサイズ感で問題ありませんが、甲高の方はハーフサイズアップを検討してください。",
+    "history": "1987年、ティンカー・ハットフィールドによってデザインされた、世界初の「ビジブルAir」搭載モデル。パリのポンピドゥー・センターの剥き出しの建築構造からインスピレーションを受け、ミッドソールの窓からAirを見せるという革新をもたらしました。",
+    "styling": "スウェットやジョガーパンツなどのスポーティーな装いはもちろん、デニムやチノパンなどの王道アメカジスタイルにも自然に馴染みます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/DZ2628-100-realphoto.jpg"
+  },
+  "cloud-5": {
+    "catchphrase": "スイス発、雲の上の走り心地を体現する超軽量シューズ",
+    "size_guide": "つま先部分が少しタイトな設計のため、普段よりハーフサイズアップを選ぶユーザーが多いです。スピードレーシングシステムにより、スリッポンのように簡単に着脱できます。",
+    "history": "OnのアイコンモデルであるCloudの最新版。特許技術「CloudTec®」が柔らかな着地と爆発的な蹴り出しを実現。スポーツシーンだけでなく、トラベルや日常のライフスタイルシューズとして世界中でブレイクしています。",
+    "styling": "アスレジャーやノームコアスタイルに最適。スリムなパンツやアクティブウェアと合わせると洗練されたシティスタイルが完成します。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/3M-101-realphoto.jpg"
+  },
+  "cloudmonster": {
+    "catchphrase": "On史上最大のクッショニングがもたらす極上のバウンス感",
+    "size_guide": "ゆとりのあるトゥボックス設計。基本的には普段と同じサイズで問題ありませんが、厚手のソックスを履く場合はハーフアップを推奨します。",
+    "history": "Onのランニングシューズの中で最大のCloud要素を配置したマックスクッションモデル。見た目のボリュームとは裏腹な軽さと、前方への強力な推進力（ロッカー形状）が特徴で、長距離ランナーからファッショニスタまで幅広く支持されています。",
+    "styling": "足元のボリュームを活かして、オーバーサイズのトップスやワイドパンツと合わせるY2K/テック系ファッションにマッチします。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/61-99025-real.jpg"
+  },
+  "cloudsurfer": {
+    "catchphrase": "次世代のCloudTec Phase®が叶えるシルキーな走り",
+    "size_guide": "足幅は標準的ですが、アッパーが柔らかくフィット感が高いためジャストサイズがおすすめ。ホールド感が欲しい方は紐でしっかりと調整してください。",
+    "history": "Onの原点であるCloudsurferが、コンピューター最適化技術によって全く新しいソール構造「CloudTec Phase®」を搭載してリニューアル。ドミノ倒しのようにソールが変形し、かつてないほどスムーズな体重移動を実現します。",
+    "styling": "スタイリッシュなデザインを活かし、細身のスウェットパンツやテーパードシルエットのトラウザーに合わせる都会的なスポーツMIXがおすすめです。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/3MD10420-real.jpg"
+  },
+  "cloudnova": {
+    "catchphrase": "ランニングテクノロジーとストリートスタイルの融合",
+    "size_guide": "インナーソックス構造（ハーフブーティ）により足首周りがタイトなフィット感です。甲高の方は足入れがキツく感じる場合があるため、ハーフサイズアップが無難です。",
+    "history": "Onが初めて明確にスニーカーカルチャーに向けてアプローチしたモデル。パフォーマンスランニングシューズの技術を搭載しながら、ミッドカットのシルエットやカスタマイズ可能なシューレース構造など、ファッション性を高めています。",
+    "styling": "ショートパンツやクロップドパンツと合わせて足首周りのデザインを見せるのが正解。ハイテク感のあるアウターとも相性が良いです。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/26-99843-real.jpg"
+  },
+  "xt-6": {
+    "catchphrase": "過酷な山岳を制覇する機能美とストリートの交差点",
+    "size_guide": "細身で甲が低いタイトな作り（特に幅が狭い）です。ハーフサイズアップ、幅広の方は1cmアップが標準的です。Quicklaceシステムで簡単にフィット感を調整できます。",
+    "history": "2013年にウルトラトレイルランニングのトップアスリート向けに開発。独自のクッション性や耐久性、過酷な環境下でのパフォーマンスが高く評価されましたが、近年はゴープコア（Gorpcore）トレンドの筆頭としてファッションシーンで大流行しています。",
+    "styling": "ナイロンパンツ、ゴアテックスのシェルジャケットなどアウトドアテイスト（ゴープコア）に最適。あえてセットアップの足元に合わせてハズしにするのも今の気分です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L41085700-real.jpg"
+  },
+  "xt-4": {
+    "catchphrase": "よりアグレッシブなソールとタフさを備えたトレイルの覇者",
+    "size_guide": "XT-6と同様に細身のシルエット。ハーフサイズアップを推奨。アッパーの素材がやや硬めで耐久性に優れています。",
+    "history": "XTシリーズの中で、より長距離や岩場などアグレッシブな地形に対応するために作られたモデル。XT-6に比べてアッパーのプロテクションが強化されており、カラフルで大胆なカラーリングが多く展開されています。",
+    "styling": "発色の良いカラーウェイが多いため、全身をモノトーンやアースカラーでまとめ、足元を主役にするコーディネートが映えます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L41709400-real.jpg"
+  },
+  "acs-pro": {
+    "catchphrase": "2000年代のアーカイブを現代のテクノロジーで蘇らせた名作",
+    "size_guide": "XT-6に比べると足幅にややゆとりがありますが、基本はハーフサイズアップがおすすめ。サイドのメッシュによる通気性と独特のホールド感が特徴です。",
+    "history": "2004年に発売された「GCS PRO」をベースに、Agile Chassis System（ACS）など現代の技術でアップデートしたモデル。金属パーツを模したアイレットや複雑なケージ構造が、Y2Kのフューチャリスティックな雰囲気を醸し出します。",
+    "styling": "ボリュームのあるシルエットとテック感が強いため、ワイドカーゴパンツやバギーシルエットのデニムとの相性が抜群。モードなスタイリングのアクセントにもなります。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L47179800-real.jpg"
+  },
+  "speedcross-6": {
+    "catchphrase": "ぬかるみや泥を噛む、強力なグリップ力を誇るトレイルギア",
+    "size_guide": "非常にタイトでホールド感の強い設計。トレイルでの足のブレを防ぐためですが、街履き用であれば最低でもハーフサイズアップ、幅広なら1cmアップを検討してください。",
+    "history": "Salomonを代表するソフトグラウンド（泥や雪など）用トレイルランニングシューズの第6世代。深く鋭いラグ（突起）を持つアウトソールが最大の特徴で、見た目のインパクトの強さからアバンギャルドなファッション層にも支持されています。",
+    "styling": "テックフリースやスウェットジョガーなど、アクティブなウェアに最適。ラグジュアリーストリートの足元に組み込む玄人好みの合わせ方も見られます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L41743100-realphoto.jpg"
+  },
+  "990v6": {
+    "catchphrase": "FuelCellを搭載し、流線型へと進化した990の最新形態",
+    "size_guide": "標準的なDワイズの場合、普段のNew Balanceと同じサイズで快適に履けます。足幅が広い方向けの2Eや4Eワイズの展開があるのも特徴です。",
+    "history": "「1000点満点中990点」というコンセプトで1982年に誕生した990シリーズの第6世代（2022年登場）。従来の「N」ロゴの配置を見直し、ミッドソールに反発弾性に優れたFuelCellを採用。歴代で最もスポーティなルックスとなりました。",
+    "styling": "スウェットパンツやスラックスと合わせた綺麗めカジュアルに最適。ボリューミーなソールがワイドパンツの裾をしっかりと受け止めます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/M990GL6-real.jpg"
+  },
+  "990v3": {
+    "catchphrase": "メッシュとスウェードの完璧なバランス、990シリーズ屈指の人気作",
+    "size_guide": "New BalanceのMade in USAモデルらしく、甲周りに適度なゆとりがあります。普段のサイズで快適にフィットしますが、ハーフダウンを好む方もいます。",
+    "history": "2012年に990シリーズの3代目として登場。ENCAP構造による優れた安定性と、前作v2から大幅に拡大されたメッシュパネルによる軽量化が特徴。JJJJoundなどの名作コラボのベースに選ばれることが多く、ファッションシーンで別格の支持を得ています。",
+    "styling": "アメカジからモードまで万能にマッチ。特に少し丈の短いパンツやロールアップしたデニムと合わせると、Nロゴとタンのダイヤモンドパターンが際立ちます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/M990GY3-real.jpg"
+  },
+  "2002r": {
+    "catchphrase": "2010年の最高峰モデルを現代のアジアメイドで復刻した大ヒット作",
+    "size_guide": "USA/UKモデルに比べるとやや小さめ（細め）の作り。ハーフサイズアップを選ぶ方が多いです。",
+    "history": "2010年発売のアメリカ製フラッグシップモデル「MR2002」のアッパーデザインを継承しつつ、ミッドソールを「860v2」のもの（N ERGYとABZORB搭載）に変更してアジア製で復刻。価格とスペックのバランスが良く、「Protection Pack」などのヒットで大流行しました。",
+    "styling": "適度なボリューム感があり、テーパードパンツからワイドシルエットまで幅広く対応。ハイテク感とレトロ感が同居し、ストリートスタイルにハマります。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/M2002R-real.jpg"
+  },
+  "1906r": {
+    "catchphrase": "2000年代初頭のランニングシューズの美学を纏うY2Kの象徴",
+    "size_guide": "2002Rと同様のソールユニットを使用しており、アッパーのホールド感が強いため、ハーフサイズアップを推奨します。",
+    "history": "ブランドの創業年を冠した「1906」シリーズ。2009年のランニングシューズのアッパーに、2002Rと同じソールユニットを組み合わせて誕生。メッシュとTPUパーツを多用した複雑なデザインが、現在のY2Kトレンドのど真ん中を射抜いています。",
+    "styling": "シルバーやメタリックカラーを取り入れたテックファッションとの相性が抜群。ルーズなナイロンパンツやカーゴパンツと合わせるのがトレンドです。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/M1906R-real.jpg"
+  },
+  "samba-og": {
+    "catchphrase": "世界のファッショニスタを虜にする、adidas最古のクラシック",
+    "size_guide": "細身で甲が低い作りです。レザーが馴染むまではタイトに感じるため、ハーフサイズアップが一般的です。",
+    "history": "1950年にサッカーシューズとして誕生。凍結したピッチ用として開発されましたが、後にインドアサッカー用に改良。特徴的なTトゥデザインとガムソールは不朽の名作であり、近年はクワイエットラグジュアリーや「Blokecore（ブロークコア）」トレンドの核として世界中で枯渇状態になりました。",
+    "styling": "スリムなパンツやフレアデニム、スラックスなど、足元をすっきりと見せたいコーディネートに最適。ローテクならではの抜け感が魅力です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/SAMBA-OG-real.jpg"
+  },
+  "gazelle": {
+    "catchphrase": "鮮やかなスエードが目を惹く、多目的トレーニングシューズの傑作",
+    "size_guide": "サンバと同様に細身のシルエット。ハーフサイズアップが推奨されます。",
+    "history": "1966年にトレーニング用シューズとして登場。アッパー全体にスエードを採用したことで、当時のレザーシューズよりも軽く柔軟性があり、鮮やかなカラーリングが可能になりました。90年代にはオアシスのノエル・ギャラガーらブリットポップのアイコンたちに愛されました。",
+    "styling": "トラックパンツと合わせたブリットポップスタイルや、鮮やかなカラーを差し色にしたモノトーンコーデのアクセントとして活躍します。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/GAZELLE-real.jpg"
+  },
+  "handball-spezial": {
+    "catchphrase": "ハンドボール用からストリートへ。サンバに次ぐネクストトレンド",
+    "size_guide": "サンバやガゼルに近い細身の作りですが、若干つま先周りに丸みがあります。ハーフサイズアップが基本です。",
+    "history": "1979年にプロハンドボール選手向けに作られたモデル。急な方向転換に対応するガムラバーアウトソールのグリップ力と、耐久性のあるスエードアッパーが特徴。サンバの次にブレイクするTトゥスニーカーとして注目を集めています。",
+    "styling": "カジュアルダウンのアイテムとして優秀。サンバよりも少しポテッとしたシルエットが、太めのチノパンやカーゴパンツともバランスを取りやすいです。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/SPEZIAL-real.jpg"
+  },
+  "yeezy-boost-350-v2": {
+    "catchphrase": "カニエ・ウェストとadidasが創り上げた現代のイコン",
+    "size_guide": "プライムニットアッパーが足にピタッと密着する構造のため、つま先が窮屈に感じやすいです。ハーフサイズ、または1サイズアップを強く推奨します。",
+    "history": "Kanye West（Ye）とadidasのコラボレーションにより誕生。靴下のようにフィットするプライムニットアッパーと、全体を覆うように配置されたBOOSTフォームが特徴。スニーカー市場のプレ値ブームを牽引した歴史的モデルです。",
+    "styling": "スキニーパンツやスウェットジョガーなど、足首を絞ったボトムスと合わせるのが王道。YEEZY独自のストリートモード感を引き立てます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/YEEZY-350-real.jpg"
+  },
+  "clifton-9": {
+    "catchphrase": "HOKAのエントリーモデルにして、究極のデイリートレーナー",
+    "size_guide": "足幅は標準〜ややタイト。普段と同じか、ゆとりを持ちたい場合はハーフアップを。ワイドワイズ（幅広）モデルの展開もあります。",
+    "history": "HOKAのロードランニングシューズの代名詞であるクリフトンシリーズの第9世代。軽量性と圧倒的なクッション性を両立し、スムーズな足運び（メタロッカー構造）を実現。ランナーから立ち仕事の人、普段履きまで幅広い層に愛用されています。",
+    "styling": "スポーティーな装いはもちろん、その適度なボリューム感を生かして、ワイドなスラックスやデニムの裾から覗かせるスタイリングが人気です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/CLIFTON9-realphoto.jpg"
+  },
+  "bondi-8": {
+    "catchphrase": "HOKAラインナップで最もクッション性の高いマキシマリストシューズ",
+    "size_guide": "クッションが分厚く、アッパーのホールド感もしっかりしています。ハーフサイズアップ、またはワイドワイズを選択する方が多いです。",
+    "history": "ブランドの象徴である「極厚ソール」を最も体現するモデル。着地の衝撃を極限まで吸収し、関節への負担を軽減します。チャンキースニーカーブームの火付け役の一つであり、ファッションアイコンとしても確固たる地位を築いています。",
+    "styling": "足元のボリュームが非常に大きいため、アウターやボトムスもオーバーサイズでバランスを取るか、スキニーで極端なVラインを作るのが効果的です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/BONDI8-real.jpg"
+  },
+  "mach-6": {
+    "catchphrase": "スピードとクッションを両立したテンポアップシューズ",
+    "size_guide": "アッパーが軽量で薄く、フィット感が高いためジャストサイズがおすすめ。クリフトンより少しタイトに感じる場合があります。",
+    "history": "反発性に優れたミッドソールを採用し、レースからスピードトレーニングまで対応する軽量モデル。第6世代でソールユニットが一新され、より反発性と耐久性が向上しました。",
+    "styling": "洗練されたスマートなシルエットなので、アクティブウェアやショーツスタイルにすっきりと合わせるのがおすすめです。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/MACH6-realphoto.jpg"
+  },
+  "gel-kayano-14": {
+    "catchphrase": "2000年代のランニングシューズの美しさをそのままに",
+    "size_guide": "アシックス特有の日本人の足に合いやすい形状。普段と同じサイズで概ね問題ありませんが、余裕を持たせたい方はハーフアップ。",
+    "history": "2008年に発表されたランニングシューズをライフスタイル向けに復刻。衝撃緩衝材「GEL」を搭載したミッドソールと、レイヤリングされたメッシュアッパーが特徴。当時のデザイナー、山下秀則氏による「閃光」をイメージしたデザインが、現在のレトロランニングブームで見事に再評価されました。",
+    "styling": "テック系パンツやスラックスと好相性。シルバーメタリックのカラーリングは、コーディネートに冷たい無機質なアクセントを加えます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/KAYANO14-real.jpg"
+  },
+  "gel-nyc": {
+    "catchphrase": "歴代の名作をマッシュアップした、ASICSの新たなクラシック",
+    "size_guide": "標準的なサイズ感。幅も適度にあり、普段のサイズかハーフサイズアップで快適に着用できます。",
+    "history": "AWAKE NYのファウンダーであるアンジェロ・バクがデザインに携わり誕生。アッパーは「GEL-NIMBUS 3」や「GEL-MC PLUS V」の要素を組み合わせ、ソールは「GEL-CUMULUS 16」を採用。ニューヨークのストリートに映えるモダンな一足です。",
+    "styling": "ストリートからカジュアルまで万能。スウェットやカーゴパンツなど、少しルーズなアイテムと合わせるとこなれ感が出ます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/GEL-NYC-real.jpg"
+  },
+  "gt-2160": {
+    "catchphrase": "波打つデザインとセグメント構造ソールが際立つ2010年代の遺産",
+    "size_guide": "足幅は標準的。ジャストサイズかハーフサイズアップがおすすめです。",
+    "history": "2010年代前半に発売されたGT-2000シリーズのデザインを踏襲したモデル。前足部とかかと部が分かれたセグメント構造のソールと、流れるようなアッパーのデザインが特徴。Kiko Kostadinov（キコ・コスタディノフ）スタジオによるキュレーションモデル等で注目を集めています。",
+    "styling": "ミニマルな服装の足元に主役として合わせるか、Y2Kスタイルのテックウェアと組み合わせるのが現代的です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/GT-2160-real.jpg"
+  },
+  "mexico-66": {
+    "catchphrase": "メキシコ五輪から生まれたオニツカの永遠の名作",
+    "size_guide": "オニツカタイガーは全体的に細身で甲が低い作りです。幅広の方はハーフサイズ〜1サイズアップを強く推奨します。",
+    "history": "1966年のメキシコシティ五輪に向けて開発されたトレーニングシューズ「リンバー」が原型。オニツカタイガーストライプ（アシックスストライプ）が初めて搭載された歴史的モデルであり、映画『キル・ビル』でユマ・サーマンがイエローモデルを着用したことでも有名です。",
+    "styling": "ソールが非常に薄くスマートなため、細身のパンツやクロップド丈、フレアパンツなどと合わせると脚のラインが綺麗に見えます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L3108F-111-real.jpg"
+  },
+  "delecity": {
+    "catchphrase": "クラシックアッパー×厚底ラバーの絶妙なチャンキー感",
+    "size_guide": "アッパーは標準的ですが、ソールの重さと硬さがあるため、かかとが抜けにくいジャストサイズを選ぶのがポイントです。",
+    "history": "1950年代のアーカイブバスケットボールシューズのアッパーデザインをベースに、テニスシューズの分厚いラバーソールを組み合わせたハイブリッドモデル。ぽってりとした可愛らしいフォルムで、女性を中心に爆発的な人気を博しています。",
+    "styling": "スカートやワンピースの足元のハズしとして、またはワイドパンツに合わせて厚底のボリュームを活かすスタイルが定評です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/DELECITY-real.jpg"
+  },
+  "nippon-made": {
+    "catchphrase": "日本の職人技術が息づく、最高品質のラグジュアリースニーカー",
+    "size_guide": "モデルによりますが、MEXICO 66等がベースの場合は細身です。上質なレザーを使用しているため、履き込むほどに自分の足に馴染んでいきます。",
+    "history": "「本物の日本」をコンセプトに、素材選びから染色、縫製、仕上げまで日本の職人技術を注ぎ込んだプレミアムライン。一足一足手作業で製品洗いなどの加工を施すため、全く同じ表情の靴は存在しません。",
+    "styling": "ドレススタイルや上質なカジュアルウェアに合わせる大人のスニーカー。革靴の代わりに着用できるほどの品格を備えています。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/NIPPON-MADE-real.jpg"
+  },
+  "chuck-70-ct70": {
+    "catchphrase": "ヴィンテージディテールに宿るマスターピース",
+    "size_guide": "CT70の木型を使用しているため、ワイズがやや細身のシルエットです。紐をしっかりと絞ってスタイリッシュに履きこなすため、ハーフサイズアップでの着用が人気を集めています。",
+    "history": "1960〜70年代のチャックテイラーの意匠を現代に再現したプレミアムモデル。伝統的なバルカナイズ製法によって生み出されるしなやかな屈曲性とソールの耐久性、特有の重量感が当時の美しいシルエットを見事に復刻しています。日本のコンバースジャパン展開ではなく、海外のConverse Inc.による企画です。",
+    "styling": "インディゴデニムやスラックスなど、ストリートからドレスダウンまで幅広く対応。ヴィンテージライクなアメカジスタイルにも自然に馴染みます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/A03711C.webp",
+    "heroItemName": "Stüssy × Converse Chuck 70",
+    "heroRetailPrice": 17600
+  },
+  "addict": {
+    "catchphrase": "伝説のヴィンテージディテールへ磨きをかけたコンバースの最高峰",
+    "size_guide": "コンバース アディクトは当時のシャープな木型を採用しています。幅広の方は、ハーフサイズアップを選ぶことで美しいシルエットを保ちつつ確実に着用できます。",
+    "history": "コンバースジャパンが手掛ける究極のプレミアムラインとして2008年にデビュー。1960年代のチャックテイラーのディテールを忠実に再現しながら、ビブラムソールやOutlast（温度調整素材）、Poron（高反発クッション）を搭載するなど、クラシックなルックスに最先端の機能性を隠し持っています。",
+    "styling": "スラックスやセットアップとのドレスカジュアルな着こなしに最適。高品質な素材感とオーラのある佇まいが、深みのある大人の雰囲気に相性抜群です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/1CL783.webp"
+  },
+  "converse": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/A03711C.webp",
+    "catchphrase": "1908年から続くアメリカンスニーカーの源流",
+    "history": "1908年、マサチューセッツ州で創業したコンバースは、チャックテイラーが愛用したことで名声を得たバスケットボールシューズ「チャックテイラーオールスター」でアイコン的地位を確立。その後も世界中でロングセラーを続けています。",
+    "heroItemName": "Stüssy × Converse Chuck 70",
+    "heroRetailPrice": 17600
+  },
+  "nike": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/CW2288-111-real.jpg",
+    "catchphrase": "Just Do Itで世界を席巻するスポーツの王者",
+    "history": "1964年にビル・バウワーマンとフィル・ナイトが共同創業。1972年に「ナイキ」ブランドに改名し、エアシューズやジョーダンブランドなど革新的な製品を生み出し続けている世界最大のスポーツメーカー。"
+  },
+  "adidas": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/SAMBA-OG-real.jpg",
+    "catchphrase": "3本ラインが象徴するドイツ発の世界的スポーツブランド",
+    "history": "1949年にアドルフ・ダスラーがドイツで創業。スタン・スミスやスーパースターなど普遍的な名作を生み出し、スポーツとファッションの融合を牽引してきた世界屈指のブランド。"
+  },
+  "new-balance": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/M990GL6-real.jpg",
+    "catchphrase": "Made in USA/UKの職人魂が宿る老舗シューズブランド",
+    "history": "1906年にボストンで創業。機能性と履き心地を追求し続けた結果、990シリーズなど高品質モデルが口コミで広まった。ニューバランスはアメリカとイギリスで今も自国生産にこだわる数少ないブランド。"
+  },
+  "asics": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/KAYANO14-real.jpg",
+    "catchphrase": "日本発テクノロジーが世界のランナーを支える",
+    "history": "1949年に鬼塚喜八郎が神戸で創業したオニツカ（現アシックス）。1977年にASICSとして再出発し、ゲルシリーズ・カヤノなど独自のクッショニング技術で世界のアスリートから高い信頼を得ている。"
+  },
+  "salomon": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L41085700-real.jpg",
+    "catchphrase": "山岳と街を繋ぐアウトドアハイブリッドの先駆者",
+    "history": "1947年にフランス・アルプスで創業したサロモン。スキーブーツ製造で培った技術を活かし、トレイルランニングシューズ分野で頭角を現す。XT-6などのモデルがストリートファッションとも融合し世界的人気を博している。"
+  },
+  "on": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/3M-101-realphoto.jpg",
+    "catchphrase": "スイス発CloudTechが変えるランニングの常識",
+    "history": "2010年にスイスで創業。元トライアスロン世界チャンピオン、オリヴィエ・ベルナールによって設立された。独自のCloudTech（クラウドテック）ソールが話題を呼び、ランニングコミュニティとファッション界両方で急速に支持を拡大。"
+  },
+  "hoka": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/CLIFTON9-realphoto.jpg",
+    "catchphrase": "極厚ソールで足を守るMaxi Cushion革命",
+    "history": "2009年にフランス人アスリートによって創業。従来の常識を覆す極厚のマキシマリストソールを採用し、長距離ランナーや登山者から絶大な支持を受ける。現在はタウンユースにも普及し急成長中のブランド。"
+  },
+  "onitsuka-tiger": {
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L3108F-111-real.jpg",
+    "catchphrase": "日本の美とスポーツの融合",
+    "history": "1949年創業の歴史あるブランド。現在のアシックスの前身であり、レトロなシューズデザインを現代のファッションアイテムとしてアップデートし、欧州やアジアなど世界中で高い人気を誇っています。"
+  }
+}

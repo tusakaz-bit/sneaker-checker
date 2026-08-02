@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/contact' },
   title: 'お問い合わせ | Sneaker Checker',
 };
 

@@ -1,32 +1,36 @@
-﻿import styles from "./page.module.css";
+export const metadata = {
+  title: 'Sneaker Checker | Sneaker Checker',
+  description: '人気スニーカーの価格推移と最安値をチェック',
+  alternates: {
+    canonical: '/',
+  },
+};
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // 1時間キャッシュ (ISR)
+
+import styles from "./page.module.css";
 import { SNEAKER_CATALOG } from "./data/sneakerCatalog";
-import { slugify, getRakutenDayInfo, getRandomViewerCount } from "@/lib/utils";
+import { slugify, getRakutenDayInfo } from "@/lib/utils";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import HeroSearchBox from "@/components/HeroSearchBox";
+import SneakerImage from '@/components/SneakerImage';
+import TrendSneakerPrice from '@/components/TrendSneakerPrice';
 
 export default async function Home() {
   const rakutenDay = getRakutenDayInfo();
   
-  // 完全SSR: サーバー側でタイムライン（人気商品）を取得
-  
-  // 完全SSR: サーバー側でタイムライン（人気商品）をデータベースから取得
+  // 完全SSR/ISR: サーバー側でタイムライン（人気商品）をデータベースから最新順で多めに取得
   const { data: dbItems } = await supabase
     .from('sneakers')
-    .select('*, price_histories(*)')
-    .limit(10);
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(30);
     
-  const timelineItems = (dbItems || []).map((snk: any) => {
-    let currentLowest = 0;
-    if (snk.price_histories && snk.price_histories.length > 0) {
-      const sorted = snk.price_histories.sort((a: any, b: any) => 
-        new Date(b.recorded_at).getTime() - new Date(a.recorded_at).getTime()
-      );
-      currentLowest = sorted[0].lowest_price;
-    }
-    return { ...snk, currentLowest };
-  });
-
+  // 動きを出すためにランダムに10件シャッフルして抽出
+  const shuffledItems = (dbItems || []).sort(() => 0.5 - Math.random());
+  const timelineItems = shuffledItems.slice(0, 10);
 
   return (
     <main className={styles.main}>
@@ -66,28 +70,22 @@ export default async function Home() {
               <Link href={`/item/${item.style_code}`} key={`${item.style_code}-${idx}`} className={styles.card}>
                 <div className={styles.badgeContainer}>
                   <div className={styles.newBadge}>NEW</div>
-                  {item.currentLowest > 0 && item.list_price && item.currentLowest < item.list_price && (
-                    <div className={styles.popularBadge} style={{ background: '#34c759' }}>定価割れ</div>
-                  )}
+                  {/* 定価割れバッジは、クライアントフェッチ化に伴い今回は非表示とするか、定価だけ表示する */}
                 </div>
                 <div className={styles.imageContainer}>
                   {item.image_url ? (
-                    <img
-                      src={item.image_url}
-                      alt={item.name}
-                      className={styles.image}
-                    />
+                    <SneakerImage src={item.image_url} alt={item.name} styleCode={item.style_code} model={item.model} className={styles.image} />
                   ) : (
                     <div className={styles.image} style={{ display:"flex", alignItems:"center", justifyContent:"center", color:"#aaa" }}>No Image</div>
                   )}
                 </div>
                 <div className={styles.cardContent}>
-                  <p className={styles.shopName}>{item.brand} {item.model}</p>
+                  <p className={styles.shopName}>{item.brand.toUpperCase()}</p>
                   <h3 className={styles.itemName} style={{ minHeight: '2.6em' }}>{item.name}</h3>
                   <div className={styles.priceRow}>
                     <span className={styles.priceLabel}>最安値</span>
                     <span className={styles.price}>
-                      {item.currentLowest > 0 ? `¥${item.currentLowest.toLocaleString()}` : '-'}
+                      <TrendSneakerPrice styleCode={item.style_code} brand={item.brand} model={item.model} />
                     </span>
                   </div>
                 </div>
@@ -131,4 +129,3 @@ export default async function Home() {
     </main>
   );
 }
-

@@ -1,9 +1,13 @@
-﻿import { searchRakutenItems } from "@/lib/rakuten";
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+import { searchRakutenItems } from "@/lib/rakuten";
 import styles from "@/app/page.module.css";
 import Link from "next/link";
 import { Metadata } from 'next';
+import SneakerImage from '@/components/SneakerImage';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/search' },
   title: '検索結果 | Sneaker Checker',
   description: 'スニーカーの最安値を検索します',
 };

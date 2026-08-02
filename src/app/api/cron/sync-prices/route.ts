@@ -1,11 +1,11 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
+import { uploadImageToSupabase } from '@/lib/storage';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function GET(request: Request) {
-  // 認証: クエリパラメータまたはヘッダーのシークレットキーで保護 (不正な実行を防ぐ)
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
   
@@ -14,10 +14,9 @@ export async function GET(request: Request) {
   }
 
   try {
-    // 1. DBから対象となるスニーカーの型番（style_code）一覧を取得
     const { data: sneakers, error: fetchError } = await supabase
       .from('sneakers')
-      .select('style_code, name, brand');
+      .select('style_code, name, brand, image_url');
 
     if (fetchError || !sneakers) {
       throw new Error(`Failed to fetch sneakers: ${fetchError?.message}`);
@@ -32,11 +31,8 @@ export async function GET(request: Request) {
 
     const updatedItems = [];
 
-    // 2. 各型番について楽天APIを叩き、最安値を記録
     for (const sneaker of sneakers) {
       const styleCode = sneaker.style_code;
-      
-      // レートリミット対策: 500msスリープ
       await delay(500);
 
       const params = new URLSearchParams({
@@ -44,22 +40,19 @@ export async function GET(request: Request) {
         accessKey: accessKey,
         keyword: styleCode,
         availability: '1',
-        sort: '+itemPrice', // 安い順
+        sort: '+itemPrice',
         hits: '30',
         imageFlag: '1',
         format: 'json',
       });
 
       const url = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${params.toString()}`;
-
-      
-      const appUrl = process.env.RAKUTEN_APP_URL?.startsWith('http') ? process.env.RAKUTEN_APP_URL : `https://${process.env.RAKUTEN_APP_URL || 'localhost:3000'}`;
+      const appUrl = process.env.RAKUTEN_APP_URL?.startsWith('http')
+        ? process.env.RAKUTEN_APP_URL
+        : `https://${process.env.RAKUTEN_APP_URL || 'localhost:3000'}`;
 
       const res = await fetch(url, {
-        headers: {
-          'Referer': appUrl,
-          'Origin': appUrl,
-        }
+        headers: { 'Referer': appUrl, 'Origin': appUrl }
       });
 
       const data = await res.json();
@@ -71,30 +64,23 @@ export async function GET(request: Request) {
 
       const items = data.Items || [];
       
-      // 3. ノイズ除去 (安価な靴ひも・アクセサリー等を除外するフィルタリング)
       const validItems = items.filter((itemObj: any) => {
         const item = itemObj.Item;
         const price = item.itemPrice;
         const title = item.itemName.toLowerCase();
 
-        // ノイズ除去条件: 価格が3000円未満のものはスニーカー本体ではない可能性が高い
         if (price < 3000) return false;
         
-        // ノイズ除去条件: タイトルにアクセサリー系のキーワードが含まれる場合は除外
-        const excludeKeywords = ['紐', 'ひも', 'シューレース', 'キーホルダー', 'ソックス', '靴下', 'インソール', '中敷き', 'tシャツ', 'パーカー', 'キャップ'];
+        const excludeKeywords = ['shoelace', 'keychain', 'socks', 'insole', 't-shirt', 'hoodie', 'cap'];
         for (const kw of excludeKeywords) {
           if (title.includes(kw)) return false;
         }
-
         return true;
       });
 
       if (validItems.length === 0) continue;
 
-      // ソートされているので最初のアイテムが最安値
       const lowestPrice = validItems[0].Item.itemPrice;
-      
-      // 最高値を取得（便宜上、30件中の最高値を採用）
       let highestPrice = lowestPrice;
       for (const itemObj of validItems) {
         if (itemObj.Item.itemPrice > highestPrice) {
@@ -102,11 +88,27 @@ export async function GET(request: Request) {
         }
       }
 
-      const shopCount = validItems.length; // 検索ヒットした有効店舗数
-      const recordedAt = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      const shopCount = validItems.length;
+      const recordedAt = new Date().toISOString().split('T')[0];
 
-      // 4. price_histories テーブルに保存 (同日はON CONFLICTでUPDATEする、または無視)
-      // Supabaseのupsertを使用
+      const currentImageUrl = sneaker.image_url || '';
+      const isAlreadyInStorage = currentImageUrl.includes('supabase.co/storage');
+
+      if (!isAlreadyInStorage && validItems[0].Item.mediumImageUrls?.length > 0) {
+        const sourceUrl = validItems[0].Item.mediumImageUrls[0].imageUrl;
+        try {
+          const publicUrl = await uploadImageToSupabase(sourceUrl, styleCode);
+          if (publicUrl) {
+            await supabase
+              .from('sneakers')
+              .update({ image_url: publicUrl })
+              .eq('style_code', styleCode);
+          }
+        } catch (e) {
+          console.error(`Failed to upload image for ${styleCode}:`, e);
+        }
+      }
+
       const { error: upsertError } = await supabase
         .from('price_histories')
         .upsert({
@@ -121,9 +123,6 @@ export async function GET(request: Request) {
         console.error(`DB Upsert Error for ${styleCode}:`, upsertError);
       } else {
         updatedItems.push(styleCode);
-        
-        // 5. オンデマンドキャッシュ更新
-        // DB更新があった商品の詳細ページのキャッシュをパージする
         revalidatePath(`/item/${styleCode}`);
       }
     }

@@ -10,14 +10,20 @@ export async function searchSneakers(keyword: string, sort: string = '+itemPrice
   }
 
   // クエリパラメータの構築
-  const params = new URLSearchParams({
+  const affiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID;
+  const paramsObj: any = {
     applicationId: appId,
     keyword: keyword,
     availability: '1', // 在庫あり
     sort: sort, // +itemPrice (安い順), -updateTimestamp (更新順/新着順)
     hits: '30', // 取得件数
     imageFlag: '1', // 画像あり
-  });
+    genreId: '558885', // 靴ジャンル
+  };
+  if (affiliateId) {
+    paramsObj.affiliateId = affiliateId;
+  }
+  const params = new URLSearchParams(paramsObj);
 
   const url = `${RAKUTEN_API_BASE_URL}?${params.toString()}`;
 
