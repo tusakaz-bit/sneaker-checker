@@ -21,16 +21,28 @@ import TrendSneakerPrice from '@/components/TrendSneakerPrice';
 export default async function Home() {
   const rakutenDay = getRakutenDayInfo();
   
-  // 完全SSR/ISR: サーバー側でタイムライン（人気商品）をデータベースから最新順で多めに取得
+  // 完全SSR/ISR: サーバー側でタイムライン（人気商品）をデータベースから最新順で多めに取得（価格履歴も結合）
   const { data: dbItems } = await supabase
     .from('sneakers')
-    .select('*')
+    .select('*, price_histories(*)')
     .order('created_at', { ascending: false })
     .limit(30);
     
   // 動きを出すためにランダムに10件シャッフルして抽出
   const shuffledItems = (dbItems || []).sort(() => 0.5 - Math.random());
-  const timelineItems = shuffledItems.slice(0, 10);
+  const timelineItems = shuffledItems.slice(0, 10).map((item: any) => {
+    let currentLowest = 0;
+    if (item.price_histories && item.price_histories.length > 0) {
+      const sorted = [...item.price_histories].sort((a: any, b: any) => 
+        new Date(b.recorded_at).getTime() - new Date(a.recorded_at).getTime()
+      );
+      currentLowest = sorted[0].lowest_price;
+    }
+    return {
+      ...item,
+      currentLowest,
+    };
+  });
 
   return (
     <main className={styles.main}>
@@ -69,8 +81,13 @@ export default async function Home() {
             {timelineItems.map((item: any, idx: number) => (
               <Link href={`/item/${item.style_code}`} key={`${item.style_code}-${idx}`} className={styles.card}>
                 <div className={styles.badgeContainer}>
-                  <div className={styles.newBadge}>NEW</div>
-                  {/* 定価割れバッジは、クライアントフェッチ化に伴い今回は非表示とするか、定価だけ表示する */}
+                  {item.currentLowest > 0 && item.list_price && item.currentLowest < item.list_price ? (
+                    <div className={styles.popularBadge} style={{ background: '#34c759' }}>
+                      定価割れ
+                    </div>
+                  ) : (
+                    <div className={styles.newBadge}>NEW</div>
+                  )}
                 </div>
                 <div className={styles.imageContainer}>
                   {item.image_url ? (
@@ -85,7 +102,11 @@ export default async function Home() {
                   <div className={styles.priceRow}>
                     <span className={styles.priceLabel}>最安値</span>
                     <span className={styles.price}>
-                      <TrendSneakerPrice styleCode={item.style_code} brand={item.brand} model={item.model} />
+                      {item.currentLowest > 0 ? (
+                        `¥${item.currentLowest.toLocaleString()}`
+                      ) : (
+                        <TrendSneakerPrice styleCode={item.style_code} brand={item.brand} model={item.model} />
+                      )}
                     </span>
                   </div>
                 </div>
