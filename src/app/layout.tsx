@@ -59,6 +59,7 @@ export default function RootLayout({
 
           
           <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)', textAlign: 'center', maxWidth: '800px', lineHeight: '1.5' }}>
+            <strong>【PR】当サイトはアフィリエイト広告（楽天アフィリエイト等）を利用しています。</strong><br />
             ※当サイトに表示されている価格や在庫状況は、データ取得時のものです。<br />
             常に変動しているため、最新の価格・在庫状況・商品詳細については、必ずリンク先の各ショップにてご確認ください。
           </p>
@@ -71,3 +72,4 @@ export default function RootLayout({
     </html>
   );
 }
+

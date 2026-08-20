@@ -76,7 +76,7 @@ export default async function BrandPage({ params }: PageProps) {
           <a
             href={searchUrl}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer sponsored"
             className={styles.buyButton}
             style={{ display: 'inline-block', padding: '1rem 2rem', background: '#bf0000', color: 'white', borderRadius: '8px', fontWeight: 'bold', textDecoration: 'none' }}
           >

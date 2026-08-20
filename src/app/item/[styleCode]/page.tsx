@@ -197,7 +197,7 @@ export default async function ItemPage({ params }: PageProps) {
             <a 
               href={buyUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer sponsored"
               className={styles.buyButton}
               style={{ display: 'block', width: '100%', padding: '1rem', background: '#bf0000', color: 'white', textAlign: 'center', borderRadius: '8px', fontWeight: 'bold', fontSize: '1.1rem', textDecoration: 'none' }}
             >

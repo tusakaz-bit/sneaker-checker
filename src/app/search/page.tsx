@@ -50,7 +50,7 @@ export default async function SearchPage(props: { searchParams: Promise<{ q: str
             <p style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>{items.length}件のアイテムが見つかりました。</p>
             <div className={styles.grid}>
               {items.map((item: any) => (
-                <a href={item.affiliateUrl || item.itemUrl} target="_blank" rel="noopener noreferrer" key={item.itemCode} className={styles.card}>
+                <a href={item.affiliateUrl || item.itemUrl} target="_blank" rel="noopener noreferrer sponsored" key={item.itemCode} className={styles.card}>
                   <div className={styles.badgeContainer}>
                     {item.pointRate > 1 && (
                       <div className={styles.pointBadge}>Pt {item.pointRate}x</div>
@@ -93,4 +93,6 @@ export default async function SearchPage(props: { searchParams: Promise<{ q: str
     </main>
   );
 }
+
+
 
