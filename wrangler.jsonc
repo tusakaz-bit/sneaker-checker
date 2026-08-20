@@ -1,5 +1,5 @@
 {
-  "main": ".open-next/worker.js",
+  "main": "cloudflare-worker.js",
   "name": "sneaker-checker",
   "compatibility_date": "2025-04-01",
   "compatibility_flags": [
