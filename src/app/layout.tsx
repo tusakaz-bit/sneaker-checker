@@ -43,6 +43,9 @@ export default function RootLayout({
             <a href="/" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--foreground)' }}>トップへ</a>
           </nav>
         </header>
+        <div style={{ width: '100%', padding: '0.4rem 1rem', background: 'var(--background)', borderBottom: '1px solid var(--border)', fontSize: '0.75rem', color: 'var(--foreground-muted)', textAlign: 'center' }}>
+          ※当サイトはアフィリエイト広告（楽天アフィリエイト等）を利用しています。
+        </div>
         
         {children}
         <footer style={{ width: '100%', padding: '3rem 1rem', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', background: 'var(--surface)', marginTop: 'auto' }}>
@@ -59,7 +62,6 @@ export default function RootLayout({
 
           
           <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)', textAlign: 'center', maxWidth: '800px', lineHeight: '1.5' }}>
-            <strong>【PR】当サイトはアフィリエイト広告（楽天アフィリエイト等）を利用しています。</strong><br />
             ※当サイトに表示されている価格や在庫状況は、データ取得時のものです。<br />
             常に変動しているため、最新の価格・在庫状況・商品詳細については、必ずリンク先の各ショップにてご確認ください。
           </p>
@@ -72,4 +74,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 
