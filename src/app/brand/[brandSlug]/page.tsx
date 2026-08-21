@@ -55,8 +55,8 @@ export default async function BrandPage({ params }: PageProps) {
   if ((!sneakers || sneakers.length === 0) && !contentData) {
     const affiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID || '';
     const searchUrl = affiliateId
-      ? `https://hb.afl.rakuten.co.jp/hgc/${affiliateId}/?pc=${encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(brandQuery)}/558885/?s=2`)}`
-      : `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(brandQuery)}/558885/?s=2`;
+      ? `https://hb.afl.rakuten.co.jp/hgc/${affiliateId}/?pc=${encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(brandQuery)}/558885/?s=2&min=3000`)}`
+      : `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(brandQuery)}/558885/?s=2&min=3000`;
 
     return (
       <div className={styles.main}>
@@ -160,3 +160,4 @@ export default async function BrandPage({ params }: PageProps) {
     </div>
   );
 }
+

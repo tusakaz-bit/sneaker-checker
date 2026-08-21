@@ -1,4 +1,4 @@
-﻿import { cleanRakutenItemName } from './utils';
+import { cleanRakutenItemName } from './utils';
 export async function searchRakutenItems(options: { keyword: string, brand?: string, sort?: string }) {
   const { keyword: rawKeyword, brand, sort = '+itemPrice' } = options;
   
@@ -31,7 +31,7 @@ export async function searchRakutenItems(options: { keyword: string, brand?: str
     hits: '30',
     imageFlag: '1',
     format: 'json',
-    minPrice: '8000',
+    minPrice: '3000',
     genreId: '558885',
   };
   if (affiliateId) {
@@ -118,7 +118,7 @@ export async function getTimelineItems() {
         hits: '10',
         imageFlag: '1',
         format: 'json',
-        minPrice: '8000',
+        minPrice: '3000',
         genreId: '558885',
       };
       if (affiliateId) {
@@ -169,5 +169,6 @@ export async function getTimelineItems() {
     return [];
   }
 }
+
 
 
