@@ -1,54 +1,40 @@
-/**
- * Cloudflare Workers カスタムエントリーポイント
- * - fetch: Next.jsのルーティングをそのまま処理
- * - scheduled: Cronトリガー（毎日自動実行）でsync-prices APIを呼び出す
- */
-
-// OpenNextのビルド済みワーカーを読み込む
 import { default as nextHandler } from "./.open-next/worker.js";
 
 export default {
-  // Next.jsのHTTPリクエストハンドラをそのまま継承
   fetch: nextHandler.fetch,
 
-  /**
-   * Cronトリガーハンドラ
-   * wrangler.jsonc の triggers.crons で設定したスケジュールで実行される
-   */
-  async scheduled(
-    controller,
-    env,
-    ctx
-  ) {
-    console.log(
-      `[Cron] scheduled triggered at: ${new Date(controller.scheduledTime).toISOString()}`
-    );
+  async scheduled(controller, env, ctx) {
+    const timestamp = new Date(controller.scheduledTime).toISOString();
+    console.log(`[Cron:START] Triggered at: ${timestamp}`);
 
     const cronSecret = env.CRON_SECRET || "";
     const siteUrl = "https://sneaker-checker.com";
+    
+    // 1回のバッチ処理件数を10件に制限（Cloudflareの50サブリクエスト制限回避のため）
     const syncUrl = `${siteUrl}/api/cron/sync-prices?secret=${encodeURIComponent(cronSecret)}&limit=10`;
 
     try {
-      const res = await fetch(syncUrl, {
-        headers: {
-          "User-Agent": "Cloudflare-Cron/1.0",
-        },
+      // 内部呼び出し (外部fetchではなくnextHandlerへ直接Requestを渡す)
+      const req = new Request(syncUrl, {
+        headers: { "User-Agent": "Cloudflare-Cron/1.0" },
       });
+      
+      const res = await nextHandler.fetch(req, env, ctx);
 
       if (res.ok) {
         const data = await res.json();
-        console.log(
-          `[Cron] sync-prices completed: updated_count=${data.updated_count}, skipped=${data.skipped?.length}`
-        );
+        console.log(`[Cron:SUCCESS] Processed: ${data.processed_count}, Updated: ${data.updated_count}, Remaining: ${data.unsynced_remaining}`);
+        if (data.skipped && data.skipped.length > 0) {
+          console.warn(`[Cron:WARNING] Skipped items:`, JSON.stringify(data.skipped));
+        }
       } else {
         const text = await res.text();
-        console.error(
-          `[Cron] sync-prices failed: ${res.status} ${res.statusText} - ${text}`
-        );
+        console.error(`[Cron:FAILED] HTTP ${res.status} ${res.statusText}`);
+        console.error(`[Cron:FAILED_DETAILS] ${text}`);
       }
     } catch (err) {
-      console.error("[Cron] Failed to call sync-prices:", err);
+      console.error("[Cron:CRITICAL] Fatal error during sync-prices execution:");
+      console.error(err.stack || err);
     }
   },
 };
-
