@@ -67,6 +67,7 @@ export default async function ItemPage({ params }: PageProps) {
     .order('recorded_at', { ascending: true });
 
   let currentLowest = 0;
+  let currentHighest = 0;
   let averagePrice = 0;
   let isLowestUpdated = false;
   let divergenceRate = null;
@@ -74,6 +75,7 @@ export default async function ItemPage({ params }: PageProps) {
   if (histories && histories.length > 0) {
     const latest = histories[histories.length - 1];
     currentLowest = latest.lowest_price;
+    currentHighest = latest.highest_price || currentLowest;
 
     const sum = histories.reduce((acc: any, curr: any) => acc + curr.lowest_price, 0);
     averagePrice = Math.round(sum / histories.length);
@@ -123,13 +125,21 @@ export default async function ItemPage({ params }: PageProps) {
     model: sneaker.model,
     productID: sneaker.style_code,
     offers: currentLowest > 0 
-      ? {
-          '@type': 'AggregateOffer',
-          lowPrice: currentLowest,
-          priceCurrency: 'JPY',
-          offerCount: histories?.[histories.length - 1]?.shop_count || 1,
-          availability: 'https://schema.org/InStock'
-        }
+      ? (currentHighest > currentLowest 
+        ? {
+            '@type': 'AggregateOffer',
+            lowPrice: currentLowest,
+            highPrice: currentHighest,
+            priceCurrency: 'JPY',
+            offerCount: histories?.[histories.length - 1]?.shop_count || 1,
+            availability: 'https://schema.org/InStock'
+          }
+        : {
+            '@type': 'Offer',
+            price: currentLowest,
+            priceCurrency: 'JPY',
+            availability: 'https://schema.org/InStock'
+          })
       : {
           '@type': 'Offer',
           price: 0,

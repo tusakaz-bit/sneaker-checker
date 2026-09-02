@@ -1,59 +1,50 @@
 import { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
+import { slugify } from '@/lib/utils';
+import { SNEAKER_CATALOG } from '@/app/data/sneakerCatalog';
 
-export const revalidate = 3600; // 1時間に1回キャッシュを更新
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://sneaker-checker.com';
 
-  // 基本的な静的ページ
   const routes = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    } as const,
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    } as const,
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    } as const,
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    } as const,
+    { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 } as const,
+    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 } as const,
+    { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 } as const,
+    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 } as const,
   ];
 
-  // Supabaseからすべてのスニーカーを取得
-  const { data: sneakers } = await supabase.from('sneakers').select('*');
-  
-  if (!sneakers) {
-    return routes;
-  }
-
-  // ユニークなブランドとモデルを抽出
+  // 1. CatalogからすべてのブランドとモデルのURLを抽出
   const brands = new Set<string>();
   const models = new Set<string>();
 
-  sneakers.forEach((sneaker) => {
-    const brandSlug = sneaker.brand.toLowerCase().replace(/\s+/g, '-');
-    const modelSlug = sneaker.model.toLowerCase().replace(/\s+/g, '-');
-    
-    brands.add(brandSlug);
-    models.add(modelSlug);
+  Object.entries(SNEAKER_CATALOG).forEach(([brand, modelMap]) => {
+    brands.add(slugify(brand));
+    Object.keys(modelMap).forEach((model) => {
+      models.add(slugify(model));
+    });
   });
 
-  // ブランド一覧ページ
+  // 2. Supabaseからすべてのアイテム（style_code）を取得しつつ、DB上のブランド・モデルも補完
+  const { data: sneakers } = await supabase.from('sneakers').select('*');
+  
+  const itemRoutes: any[] = [];
+  
+  if (sneakers) {
+    sneakers.forEach((sneaker) => {
+      brands.add(slugify(sneaker.brand));
+      models.add(slugify(sneaker.model));
+      
+      itemRoutes.push({
+        url: `${baseUrl}/item/${sneaker.style_code}`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 0.9,
+      });
+    });
+  }
+
   const brandRoutes = Array.from(brands).map((brand) => ({
     url: `${baseUrl}/brand/${brand}`,
     lastModified: new Date(),
@@ -61,20 +52,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   } as const));
 
-  // モデル一覧ページ
   const modelRoutes = Array.from(models).map((model) => ({
     url: `${baseUrl}/model/${model}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
-  } as const));
-
-  // 各アイテム（商品詳細）ページ
-  const itemRoutes = sneakers.map((sneaker) => ({
-    url: `${baseUrl}/item/${sneaker.style_code}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily',
-    priority: 0.9,
   } as const));
 
   return [...routes, ...brandRoutes, ...modelRoutes, ...itemRoutes];

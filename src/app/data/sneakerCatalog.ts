@@ -1,9 +1,11 @@
 export const SNEAKER_CATALOG: Record<string, Record<string, string[]>> = {
   "Nike": {
     "Dunk Low": ["Black/White (パンダ)", "Grey Fog", "Vintage Navy", "Medium Curry"],
+    "SB Dunk Low": ["Black", "White", "Pro"],
     "Air Force 1": ["White", "Black"],
     "Air Jordan 1 High": ["Chicago", "Bred", "Royal", "Lost & Found"],
     "Air Jordan 1 Low": ["Travis Scott", "Black Toe", "Wolf Grey"],
+    "Air Jordan 4": ["Bred", "White Cement", "Military Blue"],
     "Air Max 95": ["Neon", "Yellow Gradation"],
     "Air Max 1": ["University Red", "Royal"]
   },
@@ -22,6 +24,7 @@ export const SNEAKER_CATALOG: Record<string, Record<string, string[]>> = {
   "New Balance": {
     "990v6": ["Grey", "Black", "Navy"],
     "990v3": ["Grey", "Black"],
+    "9060": ["Grey", "Black", "Sea Salt"],
     "2002R": ["Grey", "Black", "Protection Pack"],
     "1906R": ["Silver", "Black", "White"],
     "550": ["White/Grey", "White/Green", "White/Black"]
@@ -32,6 +35,9 @@ export const SNEAKER_CATALOG: Record<string, Record<string, string[]>> = {
     "Handball Spezial": ["Black", "Navy", "Light Blue"],
     "Yeezy Boost 350 V2": ["Zebra", "Bone", "Onyx"]
   },
+  "Puma": {
+    "Speedcat": ["Black", "Red", "Sparco"]
+  },
   "HOKA": {
     "Clifton 9": ["Black", "White", "Sand"],
     "Bondi 8": ["Black", "White", "Castlerock"],
@@ -40,7 +46,8 @@ export const SNEAKER_CATALOG: Record<string, Record<string, string[]>> = {
   "Asics": {
     "GEL-KAYANO 14": ["White/Midnight", "Silver", "Black"],
     "GEL-NYC": ["Black", "Cream", "Silver"],
-    "GT-2160": ["White", "Silver", "Black"]
+    "GT-2160": ["White", "Silver", "Black"],
+    "GEL-1130": ["White", "Black", "Silver"]
   },
   "Onitsuka Tiger": {
     "MEXICO 66": ["Yellow/Black", "White/Blue", "Silver"],

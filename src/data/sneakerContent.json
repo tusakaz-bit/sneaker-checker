@@ -6,6 +6,13 @@
     "styling": "デニムやチノパン、ショーツなど王道のアメカジ・カレッジスタイルにベストマッチ。足元にレトロでポップな印象を与えます。",
     "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/BB550BBB-real.jpg"
   },
+  "9060": {
+    "catchphrase": "Y2Kテイストとモダンテクノロジーの融合",
+    "size_guide": "New Balanceの標準的なサイズ感ですが、ボリュームがあるためジャストサイズかハーフサイズアップがおすすめです。",
+    "history": "990シリーズと2000年代初頭のランニングシューズ「860」からインスピレーションを受け、現代的で再構築されたデザインとして誕生しました。チャンキーなシルエットが特徴です。",
+    "styling": "ワイドパンツやスウェットパンツとの相性が抜群で、足元に程よいボリュームを持たせるトレンドのY2Kスタイルに最適です。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/9060-default.jpg"
+  },
   "dunk-low": {
     "catchphrase": "ストリートを席巻するNike不動のマスターピース",
     "size_guide": "全体的に標準的なサイズ感ですが、足幅が広い方はハーフサイズアップを推奨します。アッパーは履き込むほどに足に馴染みます。",
@@ -285,5 +292,33 @@
     "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/L3108F-111-real.jpg",
     "catchphrase": "日本の美とスポーツの融合",
     "history": "1949年創業の歴史あるブランド。現在のアシックスの前身であり、レトロなシューズデザインを現代のファッションアイテムとしてアップデートし、欧州やアジアなど世界中で高い人気を誇っています。"
+  },
+  "gel-1130": {
+    "catchphrase": "レトロランニングの魅力を再定義する一足",
+    "size_guide": "アシックスらしいフィット感。ジャストサイズで快適に履けますが、幅広の方はハーフサイズアップを推奨します。",
+    "history": "GEL-KAYANO 14などの2000年代のランニングシューズの系譜を受け継ぎ、当時のメッシュ×シンセティックレザーのデザインを現代のライフスタイルに落とし込んでいます。",
+    "styling": "テック系のパンツやデニム、ショーツなど幅広いスタイルにマッチ。スポーティかつ洗練された印象を与えます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/gel1130-default.jpg"
+  },
+  "air-jordan-4": {
+    "catchphrase": "ストリートカルチャーを象徴する不朽の名作",
+    "size_guide": "甲周りがややタイトなため、ハーフサイズアップを選ぶ方が多いです。",
+    "history": "1989年にティンカー・ハットフィールドのデザインで誕生。プラスチックメッシュやサポートパーツが特徴的で、映画『Do the Right Thing』などポップカルチャーにも大きな影響を与えました。",
+    "styling": "カーゴパンツや太めのデニムなど、ストリートライクなコーディネートの主役として映えます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/aj4-default.jpg"
+  },
+  "sb-dunk-low": {
+    "catchphrase": "スケートシーンから世界のストリートへ",
+    "size_guide": "通常のダンクよりシュータンが厚く（厚タン）、内部のクッション材もしっかりしているため、ハーフサイズアップが基本です。",
+    "history": "2002年にNike SBラインの主力として誕生。ズームエアインソールや厚タンを採用しスケーター向けに改良され、数多くの伝説的コラボレーションを生み出しました。",
+    "styling": "スケータースタイルはもちろん、カジュアルなボトムスとの相性は抜群。スニーカーを目立たせるシンプルなスタイルがおすすめ。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/sbdunk-default.jpg"
+  },
+  "speedcat": {
+    "catchphrase": "モータースポーツから生まれた流線型シルエット",
+    "size_guide": "非常に細身で甲が低い作りとなっているため、1サイズから1.5サイズアップをおすすめします。",
+    "history": "1999年にPumaとSparcoのコラボレーションにより、F1ドライバー用のレーシングシューズをベースに開発。Y2Kトレンドの再燃とともに再び大きな注目を集めています。",
+    "styling": "フレアパンツやスリムなデニムなどと合わせると、流線型のスマートなシルエットが引き立ちます。",
+    "heroImage": "https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/speedcat-default.jpg"
   }
 }
