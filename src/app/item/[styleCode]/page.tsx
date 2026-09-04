@@ -79,56 +79,63 @@ export default async function ItemPage({ params }: PageProps) {
       const appUrl = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
 
       if (rakutenAppId && rakutenAccessKey) {
-        const params = new URLSearchParams({
-          applicationId: rakutenAppId,
-          accessKey: rakutenAccessKey,
-          keyword: styleCode,
-          availability: "1",
-          sort: "+itemPrice",
-          hits: "30",
-          imageFlag: "1",
-          format: "json",
-          minPrice: "3000",
-          genreId: "558885",
-        });
+        const EXCLUDE_KEYWORDS = ["shoelace", "keychain", "socks", "insole", "t-shirt", "hoodie", "cap", "シューレース", "インソール", "靴下", "手形アート"];
 
-        const rakutenAffiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID || "";
-        if (rakutenAffiliateId) params.set("affiliateId", rakutenAffiliateId);
+        const fetchRakutenItems = async (kw: string) => {
+          const params = new URLSearchParams({
+            applicationId: rakutenAppId,
+            accessKey: rakutenAccessKey,
+            keyword: kw,
+            availability: "1",
+            sort: "+itemPrice",
+            hits: "30",
+            imageFlag: "1",
+            format: "json",
+            minPrice: "3000",
+          });
+          const rakutenAffiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID || "";
+          if (rakutenAffiliateId) params.set("affiliateId", rakutenAffiliateId);
 
-        const rakutenUrl = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${params}`;
-        const res = await fetch(rakutenUrl, {
-          headers: { Referer: appUrl, Origin: appUrl },
-          next: { revalidate: 3600 }
-        });
-        const data = await res.json();
-
-        if (res.ok && !data.errors) {
-          const EXCLUDE_KEYWORDS = ["shoelace", "keychain", "socks", "insole", "t-shirt", "hoodie", "cap", "シューレース", "インソール", "靴下"];
-          const validItems = (data.Items || []).filter((itemObj: any) => {
+          const rakutenUrl = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${params}`;
+          const res = await fetch(rakutenUrl, {
+            headers: { Referer: appUrl, Origin: appUrl },
+            next: { revalidate: 3600 }
+          });
+          const data = await res.json();
+          if (!res.ok || data.errors) return [];
+          return (data.Items || []).filter((itemObj: any) => {
             const price = itemObj.Item.itemPrice;
             const title = itemObj.Item.itemName.toLowerCase();
             if (price < 3000) return false;
             return !EXCLUDE_KEYWORDS.some((kw) => title.includes(kw));
           });
+        };
 
-          if (validItems.length > 0) {
-            const lowestPrice = validItems[0].Item.itemPrice;
-            const highestPrice = validItems.reduce((max: number, i: any) => Math.max(max, i.Item.itemPrice), lowestPrice);
-            const shopCount = validItems.length;
+        const primaryKeyword = getRakutenSearchQuery(sneaker);
+        let validItems = await fetchRakutenItems(primaryKeyword);
 
-            const newRecord = {
-              style_code: styleCode,
-              lowest_price: lowestPrice,
-              highest_price: highestPrice,
-              shop_count: shopCount,
-              recorded_at: todayStr,
-            };
+        // もし0件だった場合、型番（styleCode）でフォールバック
+        if (validItems.length === 0 && primaryKeyword !== styleCode) {
+          validItems = await fetchRakutenItems(styleCode);
+        }
 
-            localHistories.push(newRecord);
+        if (validItems.length > 0) {
+          const lowestPrice = validItems[0].Item.itemPrice;
+          const highestPrice = validItems.reduce((max: number, i: any) => Math.max(max, i.Item.itemPrice), lowestPrice);
+          const shopCount = validItems.length;
 
-            const supabaseForUpsert = supabase; // Next.js server components can use it directly
-            await supabaseForUpsert.from("price_histories").upsert(newRecord, { onConflict: "style_code,recorded_at" });
-          }
+          const newRecord = {
+            style_code: styleCode,
+            lowest_price: lowestPrice,
+            highest_price: highestPrice,
+            shop_count: shopCount,
+            recorded_at: todayStr,
+          };
+
+          localHistories.push(newRecord);
+
+          const supabaseForUpsert = supabase;
+          await supabaseForUpsert.from("price_histories").upsert(newRecord, { onConflict: "style_code,recorded_at" });
         }
       }
     } catch (error) {
