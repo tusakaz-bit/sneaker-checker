@@ -66,22 +66,92 @@ export default async function ItemPage({ params }: PageProps) {
     .gte('recorded_at', thirtyDaysAgo.toISOString().split('T')[0])
     .order('recorded_at', { ascending: true });
 
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  let localHistories = histories ? [...histories] : [];
+  let latestRecord = localHistories.length > 0 ? localHistories[localHistories.length - 1] : null;
+
+  if (!latestRecord || latestRecord.recorded_at < todayStr) {
+    try {
+      const rakutenAppId = process.env.RAKUTEN_APP_ID;
+      const rakutenAccessKey = process.env.RAKUTEN_ACCESS_KEY;
+      const rawUrl = (process.env.RAKUTEN_APP_URL || "sneaker-checker.com").replace(/^"|"$/g, "");
+      const appUrl = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
+
+      if (rakutenAppId && rakutenAccessKey) {
+        const params = new URLSearchParams({
+          applicationId: rakutenAppId,
+          accessKey: rakutenAccessKey,
+          keyword: styleCode,
+          availability: "1",
+          sort: "+itemPrice",
+          hits: "30",
+          imageFlag: "1",
+          format: "json",
+          minPrice: "3000",
+          genreId: "558885",
+        });
+
+        const rakutenAffiliateId = process.env.RAKUTEN_AFFILIATE_ID || process.env.NEXT_PUBLIC_RAKUTEN_AFFILIATE_ID || "";
+        if (rakutenAffiliateId) params.set("affiliateId", rakutenAffiliateId);
+
+        const rakutenUrl = `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?${params}`;
+        const res = await fetch(rakutenUrl, {
+          headers: { Referer: appUrl, Origin: appUrl },
+          next: { revalidate: 3600 }
+        });
+        const data = await res.json();
+
+        if (res.ok && !data.errors) {
+          const EXCLUDE_KEYWORDS = ["shoelace", "keychain", "socks", "insole", "t-shirt", "hoodie", "cap", "シューレース", "インソール", "靴下"];
+          const validItems = (data.Items || []).filter((itemObj: any) => {
+            const price = itemObj.Item.itemPrice;
+            const title = itemObj.Item.itemName.toLowerCase();
+            if (price < 3000) return false;
+            return !EXCLUDE_KEYWORDS.some((kw) => title.includes(kw));
+          });
+
+          if (validItems.length > 0) {
+            const lowestPrice = validItems[0].Item.itemPrice;
+            const highestPrice = validItems.reduce((max: number, i: any) => Math.max(max, i.Item.itemPrice), lowestPrice);
+            const shopCount = validItems.length;
+
+            const newRecord = {
+              style_code: styleCode,
+              lowest_price: lowestPrice,
+              highest_price: highestPrice,
+              shop_count: shopCount,
+              recorded_at: todayStr,
+            };
+
+            localHistories.push(newRecord);
+
+            const supabaseForUpsert = supabase; // Next.js server components can use it directly
+            await supabaseForUpsert.from("price_histories").upsert(newRecord, { onConflict: "style_code,recorded_at" });
+          }
+        }
+      }
+    } catch (error) {
+      console.error("On-demand fetch error:", error);
+    }
+  }
+
   let currentLowest = 0;
   let currentHighest = 0;
   let averagePrice = 0;
   let isLowestUpdated = false;
   let divergenceRate = null;
 
-  if (histories && histories.length > 0) {
-    const latest = histories[histories.length - 1];
+  if (localHistories && localHistories.length > 0) {
+    const latest = localHistories[localHistories.length - 1];
     currentLowest = latest.lowest_price;
     currentHighest = latest.highest_price || currentLowest;
 
-    const sum = histories.reduce((acc: any, curr: any) => acc + curr.lowest_price, 0);
-    averagePrice = Math.round(sum / histories.length);
+    const sum = localHistories.reduce((acc: any, curr: any) => acc + curr.lowest_price, 0);
+    averagePrice = Math.round(sum / localHistories.length);
 
-    const pastMin = Math.min(...histories.slice(0, -1).map((h: any) => h.lowest_price), Infinity);
-    if (currentLowest < pastMin && histories.length > 1) {
+    const pastMin = Math.min(...localHistories.slice(0, -1).map((h: any) => h.lowest_price), Infinity);
+    if (currentLowest < pastMin && localHistories.length > 1) {
       isLowestUpdated = true;
     }
 
@@ -89,6 +159,7 @@ export default async function ItemPage({ params }: PageProps) {
       divergenceRate = Math.round(((currentLowest - sneaker.list_price) / sneaker.list_price) * 100);
     }
   }
+
 
   let explanationText = `${sneaker.name} (${sneaker.style_code}) の`;
   if (currentLowest > 0) {
@@ -131,7 +202,7 @@ export default async function ItemPage({ params }: PageProps) {
             lowPrice: currentLowest,
             highPrice: currentHighest,
             priceCurrency: 'JPY',
-            offerCount: histories?.[histories.length - 1]?.shop_count || 1,
+            offerCount: localHistories?.[localHistories.length - 1]?.shop_count || 1,
             availability: 'https://schema.org/InStock'
           }
         : {
@@ -218,7 +289,7 @@ export default async function ItemPage({ params }: PageProps) {
 
         <div style={{ background: 'var(--surface)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border)' }}>
           <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem' }}>過去90日間の最安値推移</h2>
-          <PriceChart data={histories || []} />
+          <PriceChart data={localHistories || []} />
         </div>
 
         {/* 解説テキストセクション */}
