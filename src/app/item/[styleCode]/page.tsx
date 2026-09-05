@@ -194,7 +194,7 @@ export default async function ItemPage({ params }: PageProps) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: sneaker.name,
-    image: sneaker.image_url,
+    image: `https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/${sneaker.style_code}.webp`,
     description: productDescription,
     brand: {
       '@type': 'Brand',

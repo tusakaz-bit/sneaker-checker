@@ -13,7 +13,7 @@ interface SneakerImageProps {
 }
 
 export default function SneakerImage({ alt, styleCode, model, style, className }: SneakerImageProps) {
-  const getTargetUrl = (code: string) => `https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/${code}.webp?v=1`;
+  const getTargetUrl = (code: string) => `https://alnmehxuxisbualgplxs.supabase.co/storage/v1/object/public/sneaker-images/${code}.webp?v=2`;
   
   const [imgSrc, setImgSrc] = useState(getTargetUrl(styleCode));
 
