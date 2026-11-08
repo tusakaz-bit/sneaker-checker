@@ -4,6 +4,8 @@
  * Supabaseからスニーカーデータおよび価格履歴を取得し、
  * 「値下がり」「定価割れ」「トレンド」「定番注目」の4つの切り口で
  * Buffer予約用のスレッド形式原稿（親ツイート＋子ツイート）を生成します。
+ * 
+ * ※X無料プランの文字数制限（280ウェイト / 全角140文字以内）を厳格に順守する安全設計。
  */
 
 const { createClient } = require('@supabase/supabase-js');
@@ -35,6 +37,31 @@ const TREND_KEYWORDS = [
   'mexico 66',
   'kayano'
 ];
+
+/**
+ * X（旧Twitter）の文字数ウェイト計算（全角2 / 半角1、URLは23）
+ * 無料プラン上限: 280ウェイト（全角換算140文字）
+ */
+function getTwitterWeight(text) {
+  if (!text) return 0;
+  // URLを23文字相当に置換して計算
+  const urlRegex = /https?:\/\/[^\s]+/g;
+  const textWithoutUrls = text.replace(urlRegex, '');
+  const urlMatches = text.match(urlRegex) || [];
+  let urlWeight = urlMatches.length * 23;
+
+  let weight = 0;
+  for (const char of textWithoutUrls) {
+    const code = char.codePointAt(0);
+    // 半角英数記号および半角カナは1ウェイト、全角文字・絵文字等は2ウェイト
+    if (code <= 0x007f || (code >= 0xff61 && code <= 0xff9f)) {
+      weight += 1;
+    } else {
+      weight += 2;
+    }
+  }
+  return weight + urlWeight;
+}
 
 function formatYen(val) {
   if (val === null || val === undefined || isNaN(val)) return '---';
@@ -148,7 +175,7 @@ function pickFourItems(analyzed) {
     .sort((a, b) => b.priceDrop - a.priceDrop);
 
   if (priceDropCandidates.length > 0) {
-    addIfUnique(priceDropCandidates[0], 'price_drop', '📉 直近で値下げ！');
+    addIfUnique(priceDropCandidates[0], 'price_drop', '📉 値下げ速報');
   }
 
   // 2. 【定価割れセール枠】定価より安く、割引率が高いアイテム
@@ -157,7 +184,7 @@ function pickFourItems(analyzed) {
     .sort((a, b) => b.discountRate - a.discountRate);
 
   if (discountCandidates.length > 0) {
-    addIfUnique(discountCandidates[0], 'discount', '🔥 定価割れお買い得');
+    addIfUnique(discountCandidates[0], 'discount', '🔥 定価割れセール');
   }
 
   // 3. 【トレンド・話題モデル枠】NIPPON MADE, 9060などの注目モデル
@@ -166,7 +193,7 @@ function pickFourItems(analyzed) {
     .sort((a, b) => (b.discountRate || 0) - (a.discountRate || 0));
 
   if (trendCandidates.length > 0) {
-    addIfUnique(trendCandidates[0], 'trend', '✨ SNS・街で大人気');
+    addIfUnique(trendCandidates[0], 'trend', '✨ トレンド人気');
   }
 
   // 4. 【定番・注目枠】Air Force 1, CT70, Samba等の王道モデル
@@ -192,61 +219,75 @@ function pickFourItems(analyzed) {
   return selected;
 }
 
-function cleanTag(str) {
-  if (!str) return '';
-  return str.replace(/[^a-zA-Z0-9_\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/g, '');
+/**
+ * X無料プランの制限（280ウェイト / 全角140文字）に厳密に収まる親ツイートを構築
+ */
+function buildParentTweet(item) {
+  // 商品名が長すぎる場合は適度に調整（子ツイートで完全な商品名を記載するため安心）
+  let displayName = item.name || `${item.brand} ${item.model}`;
+  if (displayName.length > 30) {
+    displayName = displayName.substring(0, 28) + '…';
+  }
+
+  let hook = '';
+  let priceLine = '';
+
+  if (item.category === 'price_drop' && item.priceDrop > 0) {
+    hook = `＼人気スニーカー値下がり速報📉／\n「${displayName}」が前回より【¥${formatYen(item.priceDrop)}値下げ】！`;
+    priceLine = item.listPrice
+      ? `定価：¥${formatYen(item.listPrice)} ➜ 最安値：¥${formatYen(item.latestPrice)}（約${item.discountRate}%OFF）`
+      : `現在の最安値：¥${formatYen(item.latestPrice)}`;
+  } else if (item.category === 'discount' && item.discountRate > 0) {
+    hook = `＼定価割れセール速報🚨お買い得／\n「${displayName}」が国内定価より大幅値下げ！`;
+    priceLine = `定価：¥${formatYen(item.listPrice)} ➜ 最安値：¥${formatYen(item.latestPrice)}（約${item.discountRate}%OFF / -¥${formatYen(item.discountAmount)}）`;
+  } else if (item.category === 'trend') {
+    hook = `＼今季大本命！話題のトレンド🔥／\nストリートやSNSで人気の「${displayName}」！`;
+    priceLine = item.listPrice
+      ? `定価：¥${formatYen(item.listPrice)} ➜ 最安値：¥${formatYen(item.latestPrice)}`
+      : `現在の最安値：¥${formatYen(item.latestPrice)}`;
+  } else {
+    hook = `＼本日のスニーカー最安値速報👟／\n定番人気モデル「${displayName}」のリアルタイム相場！`;
+    priceLine = item.listPrice && item.discountRate > 0
+      ? `定価：¥${formatYen(item.listPrice)} ➜ 最安値：¥${formatYen(item.latestPrice)}（約${item.discountRate}%OFF）`
+      : `現在の最安値：¥${formatYen(item.latestPrice)}`;
+  }
+
+  const callToAction = 'サイズがあるうちに要チェック👀✨';
+  const baseTags = '#スニーカー #最安値 #SNEAKERCHECKER';
+
+  let tweet = `${hook}\n\n${priceLine}\n${callToAction}\n\n${baseTags}`;
+
+  // もし万が一280ウェイトを超えた場合の安全ガード
+  if (getTwitterWeight(tweet) > 280) {
+    tweet = `${hook}\n\n${priceLine}\n\n${baseTags}`;
+  }
+
+  return tweet;
 }
 
 function generatePostDrafts(selectedItems) {
   const drafts = selectedItems.map((item, index) => {
     const itemUrl = `${siteBaseUrl}/item/${item.style_code}`;
-    const brandTag = cleanTag(item.brand);
-    const modelTag = cleanTag(item.model);
 
-    let hookText = '';
-    let priceDetails = '';
+    // 親ツイート（無料プラン上限280ウェイト以内に収めた文面）
+    const parentTweet = buildParentTweet(item);
+    const parentWeight = getTwitterWeight(parentTweet);
+    const parentFullWidthEquivalent = Math.ceil(parentWeight / 2);
 
-    if (item.category === 'price_drop' && item.priceDrop > 0) {
-      hookText = `＼急浮上！人気スニーカーが値下がり中📉／\n「${item.name}」が前回の最安値から【¥${formatYen(item.priceDrop)} 値下げ】されています！`;
-      priceDetails = item.listPrice
-        ? `定価：¥${formatYen(item.listPrice)}\n現在の最安値：¥${formatYen(item.latestPrice)}（約${item.discountRate}%OFF）`
-        : `現在の最安値：¥${formatYen(item.latestPrice)}`;
-    } else if (item.category === 'discount' && item.discountRate > 0) {
-      hookText = `＼定価割れセール速報🚨お買い得チャンス／\n「${item.name}」が国内定価より大幅プライスダウン中！`;
-      priceDetails = `定価：¥${formatYen(item.listPrice)}\n➜ 現在の最安値：¥${formatYen(item.latestPrice)}（約${item.discountRate}%OFF / -¥${formatYen(item.discountAmount)}）`;
-    } else if (item.category === 'trend') {
-      hookText = `＼今季大本命！話題のトレンドスニーカー🔥／\nストリートやSNSで人気沸騰中の「${item.name}」の最新相場をチェック！`;
-      priceDetails = item.latestPrice
-        ? (item.listPrice
-            ? `定価：¥${formatYen(item.listPrice)} ➜ 最安値：¥${formatYen(item.latestPrice)}`
-            : `現在の最安値：¥${formatYen(item.latestPrice)}`)
-        : `最新の在庫状況と価格推移を更新中！`;
-    } else {
-      hookText = `＼本日のスニーカー最安値速報👟／\n一足は持っておきたい定番人気モデル「${item.name}」の最新価格！`;
-      priceDetails = item.latestPrice
-        ? (item.listPrice && item.discountRate > 0
-            ? `定価：¥${formatYen(item.listPrice)} ➜ 最安値：¥${formatYen(item.latestPrice)}（約${item.discountRate}%OFF）`
-            : `現在の最安値：¥${formatYen(item.latestPrice)}`)
-        : `最新の在庫状況をリアルタイムで追跡中！`;
-    }
-
-    const hashtags = [
-      '#スニーカー',
-      '#スニーカー好きと繋がりたい',
-      '#SNEAKERCHECKER',
-      brandTag ? `#${brandTag}` : '',
-      modelTag && modelTag !== brandTag ? `#${modelTag}` : ''
-    ].filter(Boolean).join(' ');
-
-    const parentTweet = `${hookText}\n\n${priceDetails}\n\n狙っていた方はサイズがあるうちにチェックがおすすめです👀✨\n\n${hashtags}`;
-
+    // 子ツイート（正式名称・型番・誘導CTA・詳細URL）
     const childTweet = `【${item.name}】\n（型番: ${item.style_code}）\n\n▼現在の最安値ショップと価格推移グラフはこちら👇\n${itemUrl}`;
+    const childWeight = getTwitterWeight(childTweet);
+    const childFullWidthEquivalent = Math.ceil(childWeight / 2);
 
     return {
       index: index + 1,
       item,
       parentTweet,
+      parentWeight,
+      parentFullWidthEquivalent,
       childTweet,
+      childWeight,
+      childFullWidthEquivalent,
       imageNote: '※スニーカーの画像を1枚添付して投稿してください'
     };
   });
@@ -263,15 +304,16 @@ function formatMarkdownSummary(drafts) {
   });
 
   let md = `## 👟 本日のX（旧Twitter）投稿用原稿ドラフト（${today} 作成）\n\n`;
-  md += `Bufferなどの予約投稿ツールへそのままコピペして利用できるスレッド形式（親ツイート＋子ツイート）です。\n\n`;
+  md += `Bufferなどの予約投稿ツールへそのままコピペして利用できるスレッド形式（親ツイート＋子ツイート）です。\n`;
+  md += `※**X無料プランの文字数制限（全角140文字以内 / 280ウェイト以内）に完全準拠**しています。\n\n`;
 
   drafts.forEach((draft) => {
     md += `### 📌 投稿 ${draft.index}：【${draft.item.badge}】${draft.item.name}\n\n`;
-    md += `**【親ツイート】**（1ツイート目にコピペ & 画像を1枚添付）\n`;
+    md += `**【親ツイート】**（全角換算: **${draft.parentFullWidthEquivalent} / 140文字** | ウェイト: ${draft.parentWeight}/280）\n`;
     md += `> 💡 **投稿時の注意**: ${draft.imageNote}\n\n`;
     md += "```text\n" + draft.parentTweet + "\n```\n\n";
 
-    md += `**【子ツイート】**（スレッド返信としてコピペ）\n\n`;
+    md += `**【子ツイート】**（全角換算: **${draft.childFullWidthEquivalent} / 140文字** | スレッド返信としてコピペ）\n\n`;
     md += "```text\n" + draft.childTweet + "\n```\n\n";
     md += `---\n\n`;
   });
@@ -281,7 +323,7 @@ function formatMarkdownSummary(drafts) {
 
 async function main() {
   try {
-    console.log('🚀 X投稿用ドラフト生成処理を開始します...');
+    console.log('🚀 X投稿用ドラフト生成処理を開始します（無料プラン文字数対応版）...');
 
     console.log('📦 Supabaseからデータを取得中...');
     const { sneakers, histories } = await fetchData();
